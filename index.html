@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Development Agreement Tracker — Qualico Communities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B2B4B;
+    --navy-dark: #111D33;
+    --navy-mid: #243660;
+    --navy-light: #E8EDF5;
+    --navy-xlight: #F2F5FB;
+    --gold: #C8960C;
+    --gold-light: #F9EDD0;
+    --gold-mid: #E8B430;
+    --white: #FFFFFF;
+    --gray-50: #F8F8F6;
+    --gray-100: #EDEDEA;
+    --gray-200: #D8D8D3;
+    --gray-400: #9A9A93;
+    --gray-600: #5F5F58;
+    --gray-800: #2E2E2A;
+    --green: #2E7D32;
+    --green-light: #EAF3DE;
+    --red: #A32D2D;
+    --red-light: #FCEBEB;
+    --amber: #7A5A02;
+    --amber-light: #FDF3DC;
+    --font-body: 'DM Sans', sans-serif;
+    --font-display: 'DM Serif Display', serif;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --shadow-sm: 0 1px 3px rgba(27,43,75,0.08), 0 1px 2px rgba(27,43,75,0.06);
+    --shadow-md: 0 4px 16px rgba(27,43,75,0.10), 0 2px 6px rgba(27,43,75,0.06);
+    --shadow-lg: 0 12px 40px rgba(27,43,75,0.14), 0 4px 12px rgba(27,43,75,0.08);
+    --transition: 0.18s ease;
+  }
+
+  html { font-size: 14px; }
+  body {
+    font-family: var(--font-body);
+    background: var(--gray-50);
+    color: var(--gray-800);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- HEADER ---- */
+  .site-header {
+    background: var(--navy-dark);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    gap: 1.5rem;
+  }
+  .logo-block { display: flex; align-items: center; gap: 14px; }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-icon svg { width: 20px; height: 20px; }
+  .logo-text { line-height: 1.2; }
+  .logo-title { font-family: var(--font-display); font-size: 17px; color: #fff; letter-spacing: 0.01em; }
+  .logo-sub { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 300; letter-spacing: 0.04em; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header-stat { text-align: right; }
+  .header-stat-val { font-size: 22px; font-weight: 600; color: var(--gold-mid); line-height: 1; }
+  .header-stat-label { font-size: 10px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .header-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.12); }
+  .btn-add-header {
+    background: var(--gold);
+    color: var(--navy-dark);
+    border: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background var(--transition), transform var(--transition);
+    white-space: nowrap;
+  }
+  .btn-add-header:hover { background: var(--gold-mid); transform: translateY(-1px); }
+  .btn-add-header:active { transform: translateY(0); }
+
+  /* ---- MAIN LAYOUT ---- */
+  .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+  /* ---- SUMMARY CARDS ---- */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.75rem;
+  }
+  .sum-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-100);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+  .sum-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .sum-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .sum-card.total::before { background: var(--navy); }
+  .sum-card.inprogress::before { background: var(--gold); }
+  .sum-card.complete::before { background: var(--green); }
+  .sum-card.notstarted::before { background: var(--gray-200); }
+  .sum-card.blocked::before { background: var(--red); }
+  .sum-num { font-family: var(--font-display); font-size: 36px; line-height: 1; color: var(--navy); margin-bottom: 4px; }
+  .sum-card.inprogress .sum-num { color: var(--gold); }
+  .sum-card.complete .sum-num { color: var(--green); }
+  .sum-card.blocked .sum-num { color: var(--red); }
+  .sum-label { font-size: 12px; color: var(--gray-400); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ---- TOOLBAR ---- */
+  .toolbar {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-100);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .toolbar-left { display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap; }
+  .search-wrap { position: relative; flex: 1; min-width: 200px; }
+  .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--gray-400); pointer-events: none; }
+  .search-input {
+    width: 100%;
+    padding: 8px 12px 8px 34px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+  }
+  .search-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,43,75,0.08); background: var(--white); }
+  .filter-select {
+    padding: 8px 32px 8px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239A9A93' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color var(--transition);
+  }
+  .filter-select:focus { border-color: var(--navy); outline: none; }
+  .export-btn {
+    background: none;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: border-color var(--transition), color var(--transition), background var(--transition);
+    white-space: nowrap;
+  }
+  .export-btn:hover { border-color: var(--navy); color: var(--navy); background: var(--navy-xlight); }
+
+  /* ---- TABS ---- */
+  .tabs { display: flex; gap: 0; margin-bottom: 1rem; border-bottom: 2px solid var(--gray-100); }
+  .tab-btn {
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-400);
+    padding: 10px 18px;
+    cursor: pointer;
+    position: relative;
+    transition: color var(--transition);
+    letter-spacing: 0.02em;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 2px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transition: transform var(--transition);
+  }
+  .tab-btn.active { color: var(--navy); }
+  .tab-btn.active::after { transform: scaleX(1); }
+  .tab-btn:hover:not(.active) { color: var(--gray-600); }
+  .tab-count {
+    display: inline-block;
+    background: var(--gray-100);
+    color: var(--gray-400);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 20px;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+  .tab-btn.active .tab-count { background: var(--navy-light); color: var(--navy); }
+
+  /* ---- TABLE ---- */
+  .table-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-100);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 860px; }
+  thead tr { background: var(--navy-dark); }
+  th {
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    user-select: none;
+  }
+  th.sortable { cursor: pointer; }
+  th.sortable:hover { color: rgba(255,255,255,0.85); }
+  th .sort-arrow { margin-left: 4px; opacity: 0.5; font-size: 9px; }
+  th.sort-asc .sort-arrow::after { content: ' ▲'; opacity: 1; }
+  th.sort-desc .sort-arrow::after { content: ' ▼'; opacity: 1; }
+  tbody tr { border-bottom: 1px solid var(--gray-100); transition: background var(--transition); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover > td { background: var(--navy-xlight); }
+  td { padding: 11px 14px; vertical-align: middle; font-size: 13px; color: var(--gray-800); }
+  .project-name-cell { font-weight: 500; color: var(--navy); }
+  .da-cell { font-size: 12px; color: var(--gray-400); font-family: 'Courier New', monospace; letter-spacing: 0.05em; }
+
+  /* type badges */
+  .type-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .badge-ica { background: var(--navy-light); color: var(--navy); }
+  .badge-psa { background: var(--gold-light); color: var(--amber); }
+  .badge-both { background: var(--green-light); color: var(--green); }
+
+  /* status pills */
+  .status-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+  .s-not-started { background: var(--gray-100); color: var(--gray-600); }
+  .s-in-progress { background: var(--navy-light); color: var(--navy); }
+  .s-complete { background: var(--green-light); color: var(--green); }
+  .s-blocked { background: var(--red-light); color: var(--red); }
+
+  /* progress */
+  .progress-wrap { display: flex; align-items: center; gap: 8px; }
+  .progress-track { flex: 1; min-width: 60px; max-width: 90px; height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--navy); border-radius: 3px; transition: width 0.4s ease; }
+  .progress-fill.done { background: var(--green); }
+  .progress-pct { font-size: 11px; color: var(--gray-400); min-width: 36px; white-space: nowrap; }
+
+  /* actions */
+  .actions-cell { display: flex; align-items: center; gap: 4px; }
+  .icon-btn {
+    width: 28px; height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-400);
+    transition: all var(--transition);
+    font-size: 13px;
+  }
+  .icon-btn:hover { background: var(--gray-100); color: var(--gray-800); border-color: var(--gray-200); }
+  .icon-btn.expand-btn.open { background: var(--navy-light); color: var(--navy); }
+  .icon-btn.del:hover { background: var(--red-light); color: var(--red); border-color: #f7c1c1; }
+
+  /* detail / checklist row */
+  .detail-row td { background: var(--navy-xlight); padding: 1rem 1.5rem 1.25rem; border-bottom: 1px solid var(--navy-light) !important; }
+  .checklist-header { font-size: 11px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .checklist-header span { font-size: 10px; background: var(--navy-light); color: var(--navy); padding: 2px 8px; border-radius: 20px; font-weight: 500; letter-spacing: 0.04em; }
+  .checklist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+  .cl-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all var(--transition);
+    user-select: none;
+  }
+  .cl-item:hover { border-color: var(--navy-light); box-shadow: var(--shadow-sm); }
+  .cl-item.checked { background: var(--green-light); border-color: #c0dd97; }
+  .cl-item input[type=checkbox] {
+    width: 15px; height: 15px;
+    cursor: pointer;
+    accent-color: var(--navy);
+    flex-shrink: 0;
+  }
+  .cl-item.checked input[type=checkbox] { accent-color: var(--green); }
+  .cl-label { font-size: 12px; color: var(--gray-800); line-height: 1.4; }
+  .cl-item.checked .cl-label { text-decoration: line-through; color: var(--gray-400); }
+
+  /* notes in detail */
+  .detail-notes { margin-top: 12px; font-size: 12px; color: var(--gray-600); display: flex; align-items: flex-start; gap: 8px; }
+  .detail-notes-label { font-weight: 600; color: var(--gray-400); text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; white-space: nowrap; padding-top: 2px; }
+  .detail-notes-text { color: var(--gray-600); }
+
+  /* key dates panel in detail row */
+  .key-dates-panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--navy-light); }
+  .key-dates-header { font-size: 11px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .key-dates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .kd-item { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .kd-item.has-date { border-color: #c0dd97; background: var(--green-light); }
+  .kd-label { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .kd-item.has-date .kd-label { color: var(--green); }
+  .kd-value { font-size: 13px; color: var(--gray-800); font-weight: 500; }
+  .kd-item.has-date .kd-value { color: var(--green); }
+  .kd-empty { font-size: 12px; color: var(--gray-400); font-style: italic; font-weight: 400; }
+
+  /* form section divider */
+  .form-section-label { font-size: 10px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 0 6px; border-top: 1px solid var(--gray-100); margin-top: 6px; grid-column: 1 / -1; }
+
+  /* empty state */
+  .empty-state {
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--gray-400);
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
+  .empty-title { font-family: var(--font-display); font-size: 20px; color: var(--gray-600); margin-bottom: 6px; }
+  .empty-text { font-size: 13px; margin-bottom: 1.5rem; }
+  .empty-btn {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .empty-btn:hover { background: var(--navy-mid); }
+
+  /* ---- MODAL ---- */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(17,29,51,0.55);
+    z-index: 200;
+    align-items: center; justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modal-in 0.2s ease;
+  }
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--gray-100);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-title { font-family: var(--font-display); font-size: 18px; color: var(--navy); }
+  .modal-close {
+    width: 30px; height: 30px;
+    background: none; border: none;
+    color: var(--gray-400); font-size: 18px;
+    cursor: pointer; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+  }
+  .modal-close:hover { background: var(--gray-100); color: var(--gray-800); }
+  .modal-body { padding: 1.25rem 1.5rem; }
+  .form-row { margin-bottom: 1rem; }
+  .form-row:last-child { margin-bottom: 0; }
+  .form-row label { display: block; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+  .form-row input[type=text],
+  .form-row input[type=date],
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    appearance: none;
+  }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(27,43,75,0.08);
+    background: var(--white);
+  }
+  .form-row textarea { resize: vertical; min-height: 70px; }
+  .form-row select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239A9A93' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    padding-right: 32px;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gray-100);
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 10px;
+  }
+  .btn-cancel {
+    background: none;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .btn-cancel:hover { border-color: var(--gray-400); color: var(--gray-800); background: var(--gray-50); }
+  .btn-save {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+  }
+  .btn-save:hover { background: var(--navy-mid); transform: translateY(-1px); }
+
+  /* ---- TOAST ---- */
+  .toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--navy-dark);
+    color: #fff;
+    font-size: 13px;
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: none; }
+
+  /* ---- FOOTER ---- */
+  .site-footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--gray-400);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .site-footer span { color: var(--gold); }
+
+  @media (max-width: 700px) {
+    .main-container { padding: 1rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .header-inner { padding: 0 1rem; }
+    .header-stat { display: none; }
+    .header-divider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-icon">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="10" width="4" height="8" rx="1" fill="white" opacity="0.9"/>
+          <rect x="8" y="6" width="4" height="12" rx="1" fill="white"/>
+          <rect x="14" y="2" width="4" height="16" rx="1" fill="white" opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-title">Development Agreement Tracker</div>
+        <div class="logo-sub">Qualico Communities &mdash; Edmonton Region</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-stat">
+        <div class="header-stat-val" id="hdr-count">0</div>
+        <div class="header-stat-label">Projects</div>
+      </div>
+      <div class="header-divider"></div>
+      <div class="header-stat">
+        <div class="header-stat-val" id="hdr-pct">0%</div>
+        <div class="header-stat-label">Avg. Complete</div>
+      </div>
+      <div class="header-divider"></div>
+      <button class="btn-add-header" onclick="openModal()">+ Add Project</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-container">
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="sum-card total">
+      <div class="sum-num" id="sum-total">0</div>
+      <div class="sum-label">Total Projects</div>
+    </div>
+    <div class="sum-card inprogress">
+      <div class="sum-num" id="sum-inprogress">0</div>
+      <div class="sum-label">In Progress</div>
+    </div>
+    <div class="sum-card complete">
+      <div class="sum-num" id="sum-complete">0</div>
+      <div class="sum-label">Complete</div>
+    </div>
+    <div class="sum-card notstarted">
+      <div class="sum-num" id="sum-notstarted">0</div>
+      <div class="sum-label">Not Started</div>
+    </div>
+    <div class="sum-card blocked">
+      <div class="sum-num" id="sum-blocked">0</div>
+      <div class="sum-label">Blocked</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" type="text" id="search-input" placeholder="Search project name or DA #…" oninput="renderAll()" />
+      </div>
+      <select class="filter-select" id="status-filter" onchange="renderAll()">
+        <option value="">All statuses</option>
+        <option value="Not started">Not started</option>
+        <option value="In progress">In progress</option>
+        <option value="Complete">Complete</option>
+        <option value="Blocked">Blocked</option>
+      </select>
+      <select class="filter-select" id="type-filter" onchange="renderAll()">
+        <option value="">All types</option>
+        <option value="ICA">ICA only</option>
+        <option value="PSA">PSA only</option>
+        <option value="ICA + PSA">ICA + PSA</option>
+      </select>
+    </div>
+    <button class="export-btn" onclick="exportCSV()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export CSV
+    </button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-all" onclick="setTab('all', this)">All <span class="tab-count" id="tc-all">0</span></button>
+    <button class="tab-btn" id="tab-ica" onclick="setTab('ica', this)">ICA <span class="tab-count" id="tc-ica">0</span></button>
+    <button class="tab-btn" id="tab-psa" onclick="setTab('psa', this)">PSA <span class="tab-count" id="tc-psa">0</span></button>
+    <button class="tab-btn" id="tab-both" onclick="setTab('both', this)">ICA + PSA <span class="tab-count" id="tc-both">0</span></button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px;"></th>
+            <th class="sortable" onclick="sortBy('name')">Project Name <span class="sort-arrow"></span></th>
+            <th>Type</th>
+            <th class="sortable" onclick="sortBy('da')">DA # <span class="sort-arrow"></span></th>
+            <th>Checklist Progress</th>
+            <th>Status</th>
+            <th class="sortable" onclick="sortBy('sent')">Municipality Sent <span class="sort-arrow"></span></th>
+            <th>Notes</th>
+            <th style="width:80px;"></th>
+          </tr>
+        </thead>
+        <tbody id="project-tbody"></tbody>
+      </table>
+    </div>
+    <div id="empty-state" class="empty-state" style="display:none;">
+      <div class="empty-icon">📋</div>
+      <div class="empty-title">No projects yet</div>
+      <div class="empty-text">Add your first development agreement to get started.</div>
+      <button class="empty-btn" onclick="openModal()">+ Add First Project</button>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span>Qualico Communities</span> &mdash; Development Agreement Tracker &mdash; Edmonton Region
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title-text">Add Project</div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-row" style="grid-column:1/-1">
+          <label>Project Name *</label>
+          <input type="text" id="f-name" placeholder="e.g. Silverberry Phase 3" autocomplete="off" />
+        </div>
+        <div class="form-row">
+          <label>Agreement Type</label>
+          <select id="f-type">
+            <option value="ICA">ICA</option>
+            <option value="PSA">PSA</option>
+            <option value="ICA + PSA">ICA + PSA</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>DA #</label>
+          <input type="text" id="f-da" placeholder="e.g. 2025-041" autocomplete="off" />
+        </div>
+        <div class="form-row">
+          <label>Status</label>
+          <select id="f-status">
+            <option value="Not started">Not started</option>
+            <option value="In progress">In progress</option>
+            <option value="Complete">Complete</option>
+            <option value="Blocked">Blocked</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Municipality Sent Date</label>
+          <input type="date" id="f-sent" />
+        </div>
+        <div class="form-section-label">Key Dates</div>
+        <div class="form-row">
+          <label>Fees Requested</label>
+          <input type="date" id="f-fees-requested" />
+        </div>
+        <div class="form-row">
+          <label>Fees Received</label>
+          <input type="date" id="f-fees-received" />
+        </div>
+        <div class="form-row">
+          <label>Security Bond / LOC Requested</label>
+          <input type="date" id="f-bond-requested" />
+        </div>
+        <div class="form-row">
+          <label>Security Bond / LOC Received</label>
+          <input type="date" id="f-bond-received" />
+        </div>
+        <div class="form-row" style="grid-column:1/-1">
+          <label>Notes</label>
+          <textarea id="f-notes" placeholder="Optional notes or comments…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveProject()">Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const CHECKLIST = [
+  "Agreement signed, sealed, scanned, saved",
+  "Fees requested",
+  "ICA / ARA admin / inspection fee received",
+  "Security bond / LOC requested",
+  "Security bond / LOC received",
+  "Certificate of insurance",
+  "Assessments",
+  "Sent to municipality",
+  "Courtesy email sent"
+];
+
+const STORAGE_KEY = 'qualico_da_tracker_v2';
+let projects = [];
+let expandedRows = new Set();
+let editingId = null;
+let activeTab = 'all';
+let sortField = 'name';
+let sortDir = 'asc';
+
+function genId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(projects)); } catch(e) {} }
+function load() { try { const d = localStorage.getItem(STORAGE_KEY); if (d) projects = JSON.parse(d); } catch(e) {} }
+
+function calcProgress(p) {
+  const done = p.checks.filter(Boolean).length;
+  return { done, total: CHECKLIST.length, pct: Math.round(done / CHECKLIST.length * 100) };
+}
+
+function derivedStatus(p) {
+  if (p.status === 'Blocked') return 'Blocked';
+  const { done, total } = calcProgress(p);
+  if (done === 0) return 'Not started';
+  if (done === total) return 'Complete';
+  return 'In progress';
+}
+
+function statusClass(s) {
+  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Blocked': 's-blocked', 'Not started': 's-not-started' }[s] || 's-not-started';
+}
+
+function typeClass(t) {
+  return { 'ICA': 'badge-ica', 'PSA': 'badge-psa', 'ICA + PSA': 'badge-both' }[t] || 'badge-ica';
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function filteredProjects() {
+  const q = (document.getElementById('search-input').value || '').toLowerCase();
+  const sf = document.getElementById('status-filter').value;
+  const tf = document.getElementById('type-filter').value;
+  return projects.filter(p => {
+    if (activeTab === 'ica' && p.type !== 'ICA') return false;
+    if (activeTab === 'psa' && p.type !== 'PSA') return false;
+    if (activeTab === 'both' && p.type !== 'ICA + PSA') return false;
+    if (q && !p.name.toLowerCase().includes(q) && !(p.da||'').toLowerCase().includes(q)) return false;
+    if (sf && derivedStatus(p) !== sf) return false;
+    if (tf && p.type !== tf) return false;
+    return true;
+  }).sort((a, b) => {
+    let va = sortField === 'name' ? a.name : sortField === 'da' ? (a.da||'') : (a.sent||'');
+    let vb = sortField === 'name' ? b.name : sortField === 'da' ? (b.da||'') : (b.sent||'');
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+function renderAll() {
+  renderTable();
+  updateSummary();
+  updateTabs();
+}
+
+function updateSummary() {
+  document.getElementById('sum-total').textContent = projects.length;
+  document.getElementById('sum-inprogress').textContent = projects.filter(p => derivedStatus(p) === 'In progress').length;
+  document.getElementById('sum-complete').textContent = projects.filter(p => derivedStatus(p) === 'Complete').length;
+  document.getElementById('sum-notstarted').textContent = projects.filter(p => derivedStatus(p) === 'Not started').length;
+  document.getElementById('sum-blocked').textContent = projects.filter(p => derivedStatus(p) === 'Blocked').length;
+  document.getElementById('hdr-count').textContent = projects.length;
+  const avg = projects.length ? Math.round(projects.reduce((s,p) => s + calcProgress(p).pct, 0) / projects.length) : 0;
+  document.getElementById('hdr-pct').textContent = avg + '%';
+}
+
+function updateTabs() {
+  document.getElementById('tc-all').textContent = projects.length;
+  document.getElementById('tc-ica').textContent = projects.filter(p => p.type === 'ICA').length;
+  document.getElementById('tc-psa').textContent = projects.filter(p => p.type === 'PSA').length;
+  document.getElementById('tc-both').textContent = projects.filter(p => p.type === 'ICA + PSA').length;
+}
+
+function setTab(tab, el) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderAll();
+}
+
+function sortBy(field) {
+  if (sortField === field) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  else { sortField = field; sortDir = 'asc'; }
+  document.querySelectorAll('th.sortable').forEach(th => { th.classList.remove('sort-asc','sort-desc'); });
+  const map = { name: 0, da: 1, sent: 2 };
+  const ths = document.querySelectorAll('th.sortable');
+  ths[map[field]].classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+  renderTable();
+}
+
+function renderTable() {
+  const fp = filteredProjects();
+  const tbody = document.getElementById('project-tbody');
+  const empty = document.getElementById('empty-state');
+
+  if (fp.length === 0 && projects.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+  if (fp.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px;">No projects match your filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = fp.map(p => {
+    const prog = calcProgress(p);
+    const status = derivedStatus(p);
+    const isExp = expandedRows.has(p.id);
+    const notesShort = (p.notes || '').length > 40 ? p.notes.substr(0,40) + '…' : (p.notes || '—');
+
+    const mainRow = `<tr>
+      <td><button class="icon-btn expand-btn${isExp ? ' open' : ''}" onclick="toggleExpand('${p.id}')" title="Toggle checklist">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          ${isExp ? '<path d="M18 15l-6-6-6 6"/>' : '<path d="M6 9l6 6 6-6"/>'}
+        </svg>
+      </button></td>
+      <td class="project-name-cell">${esc(p.name)}</td>
+      <td><span class="type-badge ${typeClass(p.type)}">${esc(p.type)}</span></td>
+      <td class="da-cell">${esc(p.da || '—')}</td>
+      <td>
+        <div class="progress-wrap">
+          <div class="progress-track"><div class="progress-fill${prog.pct===100?' done':''}" style="width:${prog.pct}%"></div></div>
+          <span class="progress-pct">${prog.done}/${prog.total}</span>
+        </div>
+      </td>
+      <td><span class="status-pill ${statusClass(status)}">${status}</span></td>
+      <td style="font-size:12px;white-space:nowrap;">${fmtDate(p.sent)}</td>
+      <td style="font-size:12px;color:var(--gray-400);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(p.notes||'')}">${esc(notesShort)}</td>
+      <td>
+        <div class="actions-cell">
+          <button class="icon-btn" onclick="openModal('${p.id}')" title="Edit">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="icon-btn del" onclick="confirmDelete('${p.id}')" title="Delete">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+
+    if (!isExp) return mainRow;
+
+    const prog2 = calcProgress(p);
+    const clHtml = CHECKLIST.map((item, idx) => `
+      <label class="cl-item${p.checks[idx] ? ' checked' : ''}" onclick="toggleCheck('${p.id}', ${idx}); return false;">
+        <input type="checkbox" ${p.checks[idx] ? 'checked' : ''} onclick="event.preventDefault()" readonly />
+        <span class="cl-label">${esc(item)}</span>
+      </label>`).join('');
+
+    const detailRow = `<tr class="detail-row">
+      <td colspan="9">
+        <div class="checklist-header">Checklist <span>${prog2.done} of ${prog2.total} complete</span></div>
+        <div class="checklist-grid">${clHtml}</div>
+        <div class="key-dates-panel">
+          <div class="key-dates-header">Key Dates</div>
+          <div class="key-dates-grid">
+            <div class="kd-item${p.feesRequested ? ' has-date' : ''}">
+              <div class="kd-label">Fees Requested</div>
+              ${p.feesRequested ? `<div class="kd-value">${fmtDate(p.feesRequested)}</div>` : `<div class="kd-empty">Not yet entered</div>`}
+            </div>
+            <div class="kd-item${p.feesReceived ? ' has-date' : ''}">
+              <div class="kd-label">Fees Received</div>
+              ${p.feesReceived ? `<div class="kd-value">${fmtDate(p.feesReceived)}</div>` : `<div class="kd-empty">Not yet entered</div>`}
+            </div>
+            <div class="kd-item${p.bondRequested ? ' has-date' : ''}">
+              <div class="kd-label">Security Bond / LOC Requested</div>
+              ${p.bondRequested ? `<div class="kd-value">${fmtDate(p.bondRequested)}</div>` : `<div class="kd-empty">Not yet entered</div>`}
+            </div>
+            <div class="kd-item${p.bondReceived ? ' has-date' : ''}">
+              <div class="kd-label">Security Bond / LOC Received</div>
+              ${p.bondReceived ? `<div class="kd-value">${fmtDate(p.bondReceived)}</div>` : `<div class="kd-empty">Not yet entered</div>`}
+            </div>
+            <div class="kd-item${p.sent ? ' has-date' : ''}">
+              <div class="kd-label">Sent to Municipality</div>
+              ${p.sent ? `<div class="kd-value">${fmtDate(p.sent)}</div>` : `<div class="kd-empty">Not yet entered</div>`}
+            </div>
+          </div>
+        </div>
+        ${p.notes ? `<div class="detail-notes"><span class="detail-notes-label">Notes</span><span class="detail-notes-text">${esc(p.notes)}</span></div>` : ''}
+      </td>
+    </tr>`;
+
+    return mainRow + detailRow;
+  }).join('');
+}
+
+function toggleExpand(id) {
+  if (expandedRows.has(id)) expandedRows.delete(id);
+  else expandedRows.add(id);
+  renderTable();
+}
+
+function toggleCheck(pid, idx) {
+  const p = projects.find(x => x.id === pid);
+  if (!p) return;
+  p.checks[idx] = !p.checks[idx];
+  const done = p.checks.filter(Boolean).length;
+  if (p.status !== 'Blocked') {
+    if (done === 0) p.status = 'Not started';
+    else if (done === CHECKLIST.length) p.status = 'Complete';
+    else p.status = 'In progress';
+  }
+  save();
+  renderAll();
+}
+
+function openModal(id) {
+  editingId = id || null;
+  document.getElementById('modal-title-text').textContent = id ? 'Edit Project' : 'Add Project';
+  if (id) {
+    const p = projects.find(x => x.id === id);
+    document.getElementById('f-name').value = p.name;
+    document.getElementById('f-type').value = p.type;
+    document.getElementById('f-da').value = p.da || '';
+    document.getElementById('f-status').value = p.status;
+    document.getElementById('f-sent').value = p.sent || '';
+    document.getElementById('f-fees-requested').value = p.feesRequested || '';
+    document.getElementById('f-fees-received').value = p.feesReceived || '';
+    document.getElementById('f-bond-requested').value = p.bondRequested || '';
+    document.getElementById('f-bond-received').value = p.bondReceived || '';
+    document.getElementById('f-notes').value = p.notes || '';
+  } else {
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-type').value = 'ICA';
+    document.getElementById('f-da').value = '';
+    document.getElementById('f-status').value = 'Not started';
+    document.getElementById('f-sent').value = '';
+    document.getElementById('f-fees-requested').value = '';
+    document.getElementById('f-fees-received').value = '';
+    document.getElementById('f-bond-requested').value = '';
+    document.getElementById('f-bond-received').value = '';
+    document.getElementById('f-notes').value = '';
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('f-name').focus(), 80);
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+function saveProject() {
+  const name = (document.getElementById('f-name').value || '').trim();
+  if (!name) { document.getElementById('f-name').focus(); document.getElementById('f-name').style.borderColor = '#A32D2D'; return; }
+  document.getElementById('f-name').style.borderColor = '';
+  if (editingId) {
+    const p = projects.find(x => x.id === editingId);
+    p.name = name;
+    p.type = document.getElementById('f-type').value;
+    p.da = document.getElementById('f-da').value.trim();
+    p.status = document.getElementById('f-status').value;
+    p.sent = document.getElementById('f-sent').value;
+    p.feesRequested = document.getElementById('f-fees-requested').value;
+    p.feesReceived = document.getElementById('f-fees-received').value;
+    p.bondRequested = document.getElementById('f-bond-requested').value;
+    p.bondReceived = document.getElementById('f-bond-received').value;
+    p.notes = document.getElementById('f-notes').value.trim();
+    showToast('Project updated');
+  } else {
+    projects.push({
+      id: genId(),
+      name,
+      type: document.getElementById('f-type').value,
+      da: document.getElementById('f-da').value.trim(),
+      status: document.getElementById('f-status').value,
+      sent: document.getElementById('f-sent').value,
+      feesRequested: document.getElementById('f-fees-requested').value,
+      feesReceived: document.getElementById('f-fees-received').value,
+      bondRequested: document.getElementById('f-bond-requested').value,
+      bondReceived: document.getElementById('f-bond-received').value,
+      notes: document.getElementById('f-notes').value.trim(),
+      checks: CHECKLIST.map(() => false)
+    });
+    showToast('Project added');
+  }
+  save();
+  closeModal();
+  renderAll();
+}
+
+function confirmDelete(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  if (confirm(`Delete "${p.name}"? This cannot be undone.`)) {
+    projects = projects.filter(x => x.id !== id);
+    expandedRows.delete(id);
+    save();
+    renderAll();
+    showToast('Project deleted');
+  }
+}
+
+function exportCSV() {
+  const headers = ['Project Name','Type','DA #','Status','Checklist %','Fees Requested','Fees Received','Security Bond/LOC Requested','Security Bond/LOC Received','Municipality Sent','Notes', ...CHECKLIST];
+  const rows = projects.map(p => {
+    const prog = calcProgress(p);
+    return [
+      `"${(p.name||'').replace(/"/g,'""')}"`,
+      p.type,
+      p.da || '',
+      derivedStatus(p),
+      prog.pct + '%',
+      p.feesRequested || '',
+      p.feesReceived || '',
+      p.bondRequested || '',
+      p.bondReceived || '',
+      p.sent || '',
+      `"${(p.notes||'').replace(/"/g,'""')}"`,
+      ...p.checks.map(c => c ? 'Yes' : 'No')
+    ].join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'qualico_da_tracker_' + new Date().toISOString().substr(0,10) + '.csv';
+  a.click();
+  showToast('CSV exported');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Sample data
+load();
+if (projects.length === 0) {
+  projects = [
+    { id: genId(), name: 'Silverberry Phase 3', type: 'ICA', da: '2025-041', status: 'In progress', sent: '2025-03-10', notes: 'Awaiting LOC from builder', checks: [true,true,false,true,false,false,false,false,false] },
+    { id: genId(), name: 'Marquis NE — Block 7', type: 'PSA', da: '2025-018', status: 'Complete', sent: '2025-01-22', notes: '', checks: CHECKLIST.map(() => true) },
+    { id: genId(), name: 'Aster Stage 5', type: 'ICA + PSA', da: '2025-067', status: 'Not started', sent: '', notes: 'Pending engineer review', checks: CHECKLIST.map(() => false) },
+    { id: genId(), name: 'Edgemont Place — Phase 1', type: 'ICA', da: '2025-053', status: 'Blocked', sent: '', notes: 'On hold — awaiting municipal approval', checks: [true,true,true,false,false,false,false,false,false] }
+  ];
+  save();
+}
+renderAll();
+</script>
+</body>
+</html>
