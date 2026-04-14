@@ -485,7 +485,7 @@ function apiGet() {
       else resolve(data.projects);
     };
     script.onerror = () => { cleanup(); reject(new Error('Script load failed — check your SCRIPT_URL')); };
-    script.src = SCRIPT_URL + '?callback=' + cbName;
+    script.src = SCRIPT_URL + '?callback=' + cbName + '&_=' + Date.now();
     document.head.appendChild(script);
   });
 }
@@ -559,7 +559,16 @@ function esc(s) {
 
 function fmtDate(d) {
   if (!d) return '—';
-  const dt = new Date(d + 'T00:00:00');
+  // Handle YYYY-MM-DD (from date inputs) and other formats safely
+  let dt;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) {
+    // Parse as local date to avoid timezone shifting
+    const [y, m, day] = d.split('-').map(Number);
+    dt = new Date(y, m - 1, day);
+  } else {
+    dt = new Date(d);
+  }
+  if (isNaN(dt.getTime())) return '—';
   return dt.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
