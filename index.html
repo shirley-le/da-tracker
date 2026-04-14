@@ -155,6 +155,12 @@
   .cl-item.checked input[type=checkbox] { accent-color: var(--green); }
   .cl-label { font-size: 12px; color: var(--gray-800); line-height: 1.4; }
   .cl-item.checked .cl-label { text-decoration: line-through; color: var(--gray-400); }
+  .cl-item.na-item { background: var(--gray-50); border-color: var(--gray-100); opacity: 0.6; cursor: default; }
+  .cl-item.na-item .cl-label { text-decoration: line-through; color: var(--gray-400); font-style: italic; }
+  .na-btn { margin-left: auto; flex-shrink: 0; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; border: 1px solid var(--gray-200); background: none; color: var(--gray-400); cursor: pointer; letter-spacing: 0.04em; transition: all var(--transition); font-family: var(--font-body); }
+  .na-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-light); }
+  .na-btn.active { border-color: var(--amber); color: var(--amber); background: var(--amber-light); }
+  .na-label { margin-left: auto; font-size: 10px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.04em; padding: 2px 7px; border-radius: 20px; border: 1px solid var(--gray-200); background: var(--gray-50); }
   .detail-notes { margin-top: 12px; font-size: 12px; color: var(--gray-600); display: flex; align-items: flex-start; gap: 8px; }
   .detail-notes-label { font-weight: 600; color: var(--gray-400); text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; white-space: nowrap; padding-top: 2px; }
   .key-dates-panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--navy-light); }
@@ -533,13 +539,19 @@ function showError(msg) {
 // ---- HELPERS ----
 function calcProgress(p) {
   const checks = Array.isArray(p.checks) ? p.checks : [];
-  const done = checks.filter(Boolean).length;
-  return { done, total: CHECKLIST.length, pct: Math.round(done / CHECKLIST.length * 100) };
+  const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(() => false);
+  // Only count items that are not marked N/A
+  let done = 0, total = 0;
+  CHECKLIST.forEach((_, i) => {
+    if (!nas[i]) { total++; if (checks[i]) done++; }
+  });
+  return { done, total, pct: total === 0 ? 100 : Math.round(done / total * 100) };
 }
 
 function derivedStatus(p) {
   if (p.status === 'Blocked') return 'Blocked';
   const { done, total } = calcProgress(p);
+  if (total === 0) return 'Complete'; // all items are N/A
   if (done === 0) return 'Not started';
   if (done === total) return 'Complete';
   return 'In progress';
@@ -686,20 +698,30 @@ function renderTable() {
     if (!isExp) return mainRow;
 
     const checks = Array.isArray(p.checks) ? p.checks : CHECKLIST.map(() => false);
+    const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(() => false);
     const prog2  = calcProgress(p);
     const clHtml = CHECKLIST.map((item, idx) => {
       const checked = checks[idx];
-      if (isAdmin) {
-        return `<label class="cl-item clickable${checked?' checked':''}" onclick="toggleCheck('${p.id}',${idx});return false;">
-          <input type="checkbox" ${checked?'checked':''} onclick="event.preventDefault()" readonly />
-          <span class="cl-label">${esc(item)}</span>
-        </label>`;
-      } else {
-        return `<label class="cl-item clickable${checked?' checked':''}" onclick="toggleCheck('${p.id}',${idx});return false;">
-          <input type="checkbox" ${checked?'checked':''} onclick="event.preventDefault()" readonly />
-          <span class="cl-label">${esc(item)}</span>
-        </label>`;
-      }
+      const isNA    = nas[idx];
+      const naClass = isNA ? ' na-item' : '';
+      const chkClass= checked && !isNA ? ' checked' : '';
+
+      const checkbox = isNA
+        ? `<input type="checkbox" disabled style="opacity:0.3;" />`
+        : `<input type="checkbox" ${checked ? 'checked' : ''} onclick="event.preventDefault()" readonly />`;
+
+      const naToggle = isAdmin ? `
+        <button class="na-btn${isNA ? ' active' : ''}" onclick="toggleNA('${p.id}',${idx});event.stopPropagation();" title="${isNA ? 'Mark as required' : 'Mark as N/A'}">
+          N/A
+        </button>` : (isNA ? `<span class="na-label">N/A</span>` : '');
+
+      const clickAttr = !isNA ? `onclick="toggleCheck('${p.id}',${idx});return false;"` : '';
+
+      return `<label class="cl-item${isNA ? '' : ' clickable'}${chkClass}${naClass}" ${clickAttr}>
+        ${checkbox}
+        <span class="cl-label">${esc(item)}</span>
+        ${naToggle}
+      </label>`;
     }).join('');
 
     const detailRow = `<tr class="detail-row"><td colspan="9">
@@ -756,7 +778,26 @@ async function toggleCheck(pid, idx) {
   }
 }
 
-// ---- ADMIN: MODAL ----
+async function toggleNA(pid, idx) {
+  if (!isAdmin) return;
+  const p = projects.find(x => x.id === pid);
+  if (!p) return;
+  if (!Array.isArray(p.nas)) p.nas = CHECKLIST.map(() => false);
+  p.nas[idx] = !p.nas[idx];
+  // If marking N/A, uncheck the item too
+  if (p.nas[idx] && Array.isArray(p.checks)) p.checks[idx] = false;
+  renderAll();
+  showSync('Saving…', 'saving');
+  try {
+    await apiPost({ action: 'updateChecks', id: pid, checks: p.checks, nas: p.nas });
+    showSync('Saved', 'done');
+  } catch(err) {
+    showSync('Save failed — ' + err.message, 'error');
+    showToast('Could not save: ' + err.message, true);
+  }
+}
+
+
 function openModal(id) {
   if (!isAdmin) return;
   editingId = id || null;
@@ -803,7 +844,8 @@ async function saveProject() {
     bondRequested:  document.getElementById('f-bond-requested').value,
     bondReceived:   document.getElementById('f-bond-received').value,
     notes:          document.getElementById('f-notes').value.trim(),
-    checks:         editingId ? (projects.find(x=>x.id===editingId)||{}).checks || CHECKLIST.map(()=>false) : CHECKLIST.map(()=>false)
+    checks:         editingId ? (projects.find(x=>x.id===editingId)||{}).checks || CHECKLIST.map(()=>false) : CHECKLIST.map(()=>false),
+    nas:            editingId ? (projects.find(x=>x.id===editingId)||{}).nas   || CHECKLIST.map(()=>false) : CHECKLIST.map(()=>false)
   };
 
   closeModal();
