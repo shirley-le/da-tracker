@@ -762,15 +762,12 @@ async function toggleCheck(pid, idx) {
   const p = projects.find(x => x.id === pid);
   if (!p) return;
   if (!Array.isArray(p.checks)) p.checks = CHECKLIST.map(() => false);
+  if (!Array.isArray(p.nas))    p.nas    = CHECKLIST.map(() => false);
   p.checks[idx] = !p.checks[idx];
-  const done = p.checks.filter(Boolean).length;
-  if (p.status !== 'Blocked') {
-    p.status = done === 0 ? 'Not started' : done === CHECKLIST.length ? 'Complete' : 'In progress';
-  }
   renderAll();
   showSync('Saving checklist…', 'saving');
   try {
-    await apiPost({ action: 'updateChecks', id: pid, checks: p.checks });
+    await apiPost({ action: 'updateChecks', id: pid, checks: p.checks, nas: p.nas });
     showSync('Saved', 'done');
   } catch(err) {
     showSync('Save failed — ' + err.message, 'error');
