@@ -300,7 +300,7 @@
       <select class="filter-select" id="status-filter" onchange="renderAll()">
         <option value="">All statuses</option>
         <option value="Not started">Not started</option>
-        <option value="With signing">With signing</option>
+        <option value="Out for signing">Out for signing</option>
         <option value="In progress">In progress</option>
         <option value="Complete">Complete</option>
       </select>
@@ -573,14 +573,14 @@ function derivedStatus(p) {
   const { done, total } = calcProgress(p);
   if (total === 0) return 'Complete';
   // "With Signing" badge: item 0 checked but item 1 (Agreement Signed) not yet checked
-  if (checks[IDX_WITH_MGMT] && !checks[IDX_AGREEMENT]) return 'With signing';
+  if (checks[IDX_WITH_MGMT] && !checks[IDX_AGREEMENT]) return 'Out for signing';
   if (done === 0) return 'Not started';
   if (done === total) return 'Complete';
   return 'In progress';
 }
 
 function statusClass(s) {
-  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Not started': 's-not-started', 'With signing': 's-with-signing' }[s] || 's-not-started';
+  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Not started': 's-not-started', 'Out for signing': 's-with-signing' }[s] || 's-not-started';
 }
 
 function typeClass(t) {
@@ -748,7 +748,7 @@ function renderTable() {
       return `<label class="cl-item${isNA ? '' : ' clickable'}${chkClass}${naClass}" ${clickAttr}>
         ${checkbox}
         <span class="cl-label">${esc(item)}</span>
-        ${isWithMgmt && checked ? `<span class="signing-badge">With signing</span>` : ''}
+        ${isWithMgmt && checked ? `<span class="signing-badge">Out for signing</span>` : ''}
         ${naToggle}
       </label>`;
     }).join('');
