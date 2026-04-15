@@ -76,11 +76,9 @@
   .sum-card.inprogress::before { background: var(--gold); }
   .sum-card.complete::before { background: var(--green); }
   .sum-card.notstarted::before { background: var(--gray-200); }
-  .sum-card.blocked::before { background: var(--red); }
   .sum-num { font-family: var(--font-display); font-size: 36px; line-height: 1; color: var(--navy); margin-bottom: 4px; }
   .sum-card.inprogress .sum-num { color: var(--gold); }
   .sum-card.complete .sum-num { color: var(--green); }
-  .sum-card.blocked .sum-num { color: var(--red); }
   .sum-label { font-size: 12px; color: var(--gray-400); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; }
 
   /* TOOLBAR */
@@ -288,7 +286,6 @@
     <div class="sum-card inprogress"><div class="sum-num" id="sum-inprogress">0</div><div class="sum-label">In Progress</div></div>
     <div class="sum-card complete"><div class="sum-num" id="sum-complete">0</div><div class="sum-label">Complete</div></div>
     <div class="sum-card notstarted"><div class="sum-num" id="sum-notstarted">0</div><div class="sum-label">Not Started</div></div>
-    <div class="sum-card blocked"><div class="sum-num" id="sum-blocked">0</div><div class="sum-label">Blocked</div></div>
   </div>
 
   <div class="toolbar">
@@ -302,7 +299,6 @@
         <option value="Not started">Not started</option>
         <option value="In progress">In progress</option>
         <option value="Complete">Complete</option>
-        <option value="Blocked">Blocked</option>
       </select>
       <select class="filter-select" id="type-filter" onchange="renderAll()">
         <option value="">All types</option>
@@ -387,11 +383,10 @@
             <option value="Not started">Not started</option>
             <option value="In progress">In progress</option>
             <option value="Complete">Complete</option>
-            <option value="Blocked">Blocked</option>
           </select>
         </div>
         <div class="form-row">
-          <label>Municipality Sent Date</label>
+          <label>Municipality Sent Date (Partially Executed)</label>
           <input type="date" id="f-sent" />
         </div>
         <div class="form-section-label">Key Dates</div>
@@ -410,6 +405,14 @@
         <div class="form-row">
           <label>Security Bond / LOC Received</label>
           <input type="date" id="f-bond-received" />
+        </div>
+        <div class="form-row">
+          <label>Fully Executed Date</label>
+          <input type="date" id="f-fully-executed" />
+        </div>
+        <div class="form-row">
+          <label>CP Date <span style="font-size:10px;color:var(--gray-400);font-weight:400;text-transform:none;">(City of Edmonton only)</span></label>
+          <input type="date" id="f-cp-date" />
         </div>
         <div class="form-row" style="grid-column:1/-1">
           <label>Notes</label>
@@ -435,6 +438,7 @@ const ADMIN_SECRET = 'shirley-admin-2026';  // must match Code.gs
 // ============================================================
 
 const CHECKLIST = [
+  "With management for signing",
   "Agreement signed, sealed, scanned, saved",
   "Fees requested",
   "ICA / ARA admin / inspection fee received",
@@ -442,9 +446,14 @@ const CHECKLIST = [
   "Security bond / LOC received",
   "Certificate of insurance",
   "Assessments",
-  "Sent to municipality",
-  "Courtesy email sent"
+  "Sent to municipality (partially executed)",
+  "Courtesy email sent",
+  "Fully executed",
+  "CP Date"
 ];
+
+// Items that have N/A toggled on by default (CP Date is CoE-only)
+const CHECKLIST_NA_DEFAULT = [11]; // index of "CP Date"
 
 let projects    = [];
 let expandedRows = new Set();
@@ -549,16 +558,15 @@ function calcProgress(p) {
 }
 
 function derivedStatus(p) {
-  if (p.status === 'Blocked') return 'Blocked';
   const { done, total } = calcProgress(p);
-  if (total === 0) return 'Complete'; // all items are N/A
+  if (total === 0) return 'Complete';
   if (done === 0) return 'Not started';
   if (done === total) return 'Complete';
   return 'In progress';
 }
 
 function statusClass(s) {
-  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Blocked': 's-blocked', 'Not started': 's-not-started' }[s] || 's-not-started';
+  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Not started': 's-not-started' }[s] || 's-not-started';
 }
 
 function typeClass(t) {
@@ -617,7 +625,6 @@ function updateSummary() {
   document.getElementById('sum-inprogress').textContent = projects.filter(p => derivedStatus(p) === 'In progress').length;
   document.getElementById('sum-complete').textContent   = projects.filter(p => derivedStatus(p) === 'Complete').length;
   document.getElementById('sum-notstarted').textContent = projects.filter(p => derivedStatus(p) === 'Not started').length;
-  document.getElementById('sum-blocked').textContent    = projects.filter(p => derivedStatus(p) === 'Blocked').length;
   document.getElementById('hdr-count').textContent      = projects.length;
   const avg = projects.length ? Math.round(projects.reduce((s,p) => s + calcProgress(p).pct, 0) / projects.length) : 0;
   document.getElementById('hdr-pct').textContent = avg + '%';
@@ -734,7 +741,9 @@ function renderTable() {
           ${kdCard('Fees Received', p.feesReceived)}
           ${kdCard('Security Bond / LOC Requested', p.bondRequested)}
           ${kdCard('Security Bond / LOC Received', p.bondReceived)}
-          ${kdCard('Sent to Municipality', p.sent)}
+          ${kdCard('Sent to Municipality (Partially Executed)', p.sent)}
+          ${kdCard('Fully Executed', p.fullyExecuted)}
+          ${nas[11] ? '' : kdCard('CP Date', p.cpDate)}
         </div>
       </div>
       ${p.notes ? `<div class="detail-notes"><span class="detail-notes-label">Notes</span><span class="detail-notes-text">${esc(p.notes)}</span></div>` : ''}
@@ -810,12 +819,14 @@ function openModal(id) {
     document.getElementById('f-fees-received').value  = p.feesReceived || '';
     document.getElementById('f-bond-requested').value = p.bondRequested || '';
     document.getElementById('f-bond-received').value  = p.bondReceived || '';
+    document.getElementById('f-fully-executed').value = p.fullyExecuted || '';
+    document.getElementById('f-cp-date').value        = p.cpDate || '';
     document.getElementById('f-notes').value          = p.notes || '';
   } else {
     ['f-name','f-da','f-notes'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('f-type').value   = 'ICA';
     document.getElementById('f-status').value = 'Not started';
-    ['f-sent','f-fees-requested','f-fees-received','f-bond-requested','f-bond-received'].forEach(id => document.getElementById(id).value = '');
+    ['f-sent','f-fees-requested','f-fees-received','f-bond-requested','f-bond-received','f-fully-executed','f-cp-date'].forEach(id => document.getElementById(id).value = '');
   }
   document.getElementById('modal-overlay').classList.add('open');
   setTimeout(() => document.getElementById('f-name').focus(), 80);
@@ -840,9 +851,11 @@ async function saveProject() {
     feesReceived:   document.getElementById('f-fees-received').value,
     bondRequested:  document.getElementById('f-bond-requested').value,
     bondReceived:   document.getElementById('f-bond-received').value,
+    fullyExecuted:  document.getElementById('f-fully-executed').value,
+    cpDate:         document.getElementById('f-cp-date').value,
     notes:          document.getElementById('f-notes').value.trim(),
     checks:         editingId ? (projects.find(x=>x.id===editingId)||{}).checks || CHECKLIST.map(()=>false) : CHECKLIST.map(()=>false),
-    nas:            editingId ? (projects.find(x=>x.id===editingId)||{}).nas   || CHECKLIST.map(()=>false) : CHECKLIST.map(()=>false)
+    nas:            editingId ? (projects.find(x=>x.id===editingId)||{}).nas   || CHECKLIST.map((_,i)=>CHECKLIST_NA_DEFAULT.includes(i)) : CHECKLIST.map((_,i)=>CHECKLIST_NA_DEFAULT.includes(i))
   };
 
   closeModal();
