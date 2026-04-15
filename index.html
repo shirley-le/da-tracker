@@ -128,7 +128,7 @@
   .s-not-started { background: var(--gray-100); color: var(--gray-600); }
   .s-in-progress { background: var(--navy-light); color: var(--navy); }
   .s-complete { background: var(--green-light); color: var(--green); }
-  .s-blocked { background: var(--red-light); color: var(--red); }
+  .s-with-signing { background: var(--gold-light); color: var(--amber); }
   .progress-wrap { display: flex; align-items: center; gap: 8px; }
   .progress-track { flex: 1; min-width: 60px; max-width: 90px; height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--navy); border-radius: 3px; transition: width 0.4s ease; }
@@ -153,6 +153,9 @@
   .cl-item.checked input[type=checkbox] { accent-color: var(--green); }
   .cl-label { font-size: 12px; color: var(--gray-800); line-height: 1.4; }
   .cl-item.checked .cl-label { text-decoration: line-through; color: var(--gray-400); }
+  .cl-item.with-signing-item { background: var(--gold-light); border-color: #e8c97a; }
+  .cl-item.with-signing-item .cl-label { text-decoration: none; color: var(--amber); font-weight: 500; }
+  .signing-badge { margin-left: auto; flex-shrink: 0; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: var(--gold-light); border: 1px solid #e8c97a; color: var(--amber); letter-spacing: 0.04em; white-space: nowrap; }
   .cl-item.na-item { background: var(--gray-50); border-color: var(--gray-100); opacity: 0.6; cursor: default; }
   .cl-item.na-item .cl-label { text-decoration: line-through; color: var(--gray-400); font-style: italic; }
   .na-btn { margin-left: auto; flex-shrink: 0; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; border: 1px solid var(--gray-200); background: none; color: var(--gray-400); cursor: pointer; letter-spacing: 0.04em; transition: all var(--transition); font-family: var(--font-body); }
@@ -297,6 +300,7 @@
       <select class="filter-select" id="status-filter" onchange="renderAll()">
         <option value="">All statuses</option>
         <option value="Not started">Not started</option>
+        <option value="With signing">With signing</option>
         <option value="In progress">In progress</option>
         <option value="Complete">Complete</option>
       </select>
@@ -448,12 +452,16 @@ const CHECKLIST = [
   "Assessments",
   "Sent to municipality (partially executed)",
   "Courtesy email sent",
-  "Fully executed",
-  "CP Date"
+  "Fully executed"
 ];
 
-// Items that have N/A toggled on by default (CP Date is CoE-only)
-const CHECKLIST_NA_DEFAULT = [11]; // index of "CP Date"
+// CP Date is not a checklist item — it's a key date field only (CoE projects)
+// Index constants for special checklist items
+const IDX_WITH_MGMT      = 0; // "With management for signing"
+const IDX_AGREEMENT      = 1; // "Agreement signed, sealed, scanned, saved"
+
+// No checklist items default to N/A anymore (CP Date removed from checklist)
+const CHECKLIST_NA_DEFAULT = [];
 
 let projects    = [];
 let expandedRows = new Set();
@@ -549,24 +557,30 @@ function showError(msg) {
 function calcProgress(p) {
   const checks = Array.isArray(p.checks) ? p.checks : [];
   const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(() => false);
-  // Only count items that are not marked N/A
+  const agreementSigned = checks[IDX_AGREEMENT];
   let done = 0, total = 0;
   CHECKLIST.forEach((_, i) => {
+    // Once Agreement Signed is checked, "With management for signing" is no longer counted
+    if (i === IDX_WITH_MGMT && agreementSigned) return;
     if (!nas[i]) { total++; if (checks[i]) done++; }
   });
   return { done, total, pct: total === 0 ? 100 : Math.round(done / total * 100) };
 }
 
 function derivedStatus(p) {
+  const checks = Array.isArray(p.checks) ? p.checks : [];
+  const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(() => false);
   const { done, total } = calcProgress(p);
   if (total === 0) return 'Complete';
+  // "With Signing" badge: item 0 checked but item 1 (Agreement Signed) not yet checked
+  if (checks[IDX_WITH_MGMT] && !checks[IDX_AGREEMENT]) return 'With signing';
   if (done === 0) return 'Not started';
   if (done === total) return 'Complete';
   return 'In progress';
 }
 
 function statusClass(s) {
-  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Not started': 's-not-started' }[s] || 's-not-started';
+  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Not started': 's-not-started', 'With signing': 's-with-signing' }[s] || 's-not-started';
 }
 
 function typeClass(t) {
@@ -710,8 +724,15 @@ function renderTable() {
     const clHtml = CHECKLIST.map((item, idx) => {
       const checked = checks[idx];
       const isNA    = nas[idx];
+
+      // Hide "With management for signing" once "Agreement signed" is checked
+      if (idx === IDX_WITH_MGMT && checks[IDX_AGREEMENT]) return '';
+
       const naClass = isNA ? ' na-item' : '';
-      const chkClass= checked && !isNA ? ' checked' : '';
+
+      // "With management for signing" gets special styling — no strikethrough, show as active/signing state
+      const isWithMgmt = idx === IDX_WITH_MGMT;
+      const chkClass = isNA ? '' : (checked ? (isWithMgmt ? ' with-signing-item' : ' checked') : '');
 
       const checkbox = isNA
         ? `<input type="checkbox" disabled style="opacity:0.3;" />`
@@ -727,6 +748,7 @@ function renderTable() {
       return `<label class="cl-item${isNA ? '' : ' clickable'}${chkClass}${naClass}" ${clickAttr}>
         ${checkbox}
         <span class="cl-label">${esc(item)}</span>
+        ${isWithMgmt && checked ? `<span class="signing-badge">With signing</span>` : ''}
         ${naToggle}
       </label>`;
     }).join('');
@@ -743,7 +765,7 @@ function renderTable() {
           ${kdCard('Security Bond / LOC Received', p.bondReceived)}
           ${kdCard('Sent to Municipality (Partially Executed)', p.sent)}
           ${kdCard('Fully Executed', p.fullyExecuted)}
-          ${nas[11] ? '' : kdCard('CP Date', p.cpDate)}
+          ${p.cpDate ? kdCard('CP Date', p.cpDate) : ''}
         </div>
       </div>
       ${p.notes ? `<div class="detail-notes"><span class="detail-notes-label">Notes</span><span class="detail-notes-text">${esc(p.notes)}</span></div>` : ''}
