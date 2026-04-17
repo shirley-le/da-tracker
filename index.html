@@ -835,7 +835,6 @@ function openModal(id) {
     document.getElementById('f-name').value           = p.name;
     document.getElementById('f-type').value           = p.type;
     document.getElementById('f-da').value             = p.da || '';
-    document.getElementById('f-status').value         = p.status;
     document.getElementById('f-sent').value           = p.sent || '';
     document.getElementById('f-fees-requested').value = p.feesRequested || '';
     document.getElementById('f-fees-received').value  = p.feesReceived || '';
@@ -867,7 +866,6 @@ async function saveProject() {
     name,
     type:           document.getElementById('f-type').value,
     da:             document.getElementById('f-da').value.trim(),
-    status:         document.getElementById('f-status').value,
     sent:           document.getElementById('f-sent').value,
     feesRequested:  document.getElementById('f-fees-requested').value,
     feesReceived:   document.getElementById('f-fees-received').value,
