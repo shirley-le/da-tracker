@@ -310,6 +310,13 @@
         <option value="PSA">PSA only</option>
         <option value="ICA + PSA">ICA + PSA</option>
       </select>
+      <select class="filter-select" id="sort-select" onchange="setSortFromDropdown()">
+        <option value="name-asc">Name A → Z</option>
+        <option value="name-desc">Name Z → A</option>
+        <option value="da-asc">DA # A → Z</option>
+        <option value="sent-asc">Municipality Sent ↑</option>
+        <option value="sent-desc">Municipality Sent ↓</option>
+      </select>
     </div>
     <button class="export-btn" onclick="exportCSV()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -470,6 +477,24 @@ let activeTab   = 'all';
 let sortField   = 'name';
 let sortDir     = 'asc';
 
+// Map date fields to their corresponding checklist item indexes
+const DATE_TO_CHECKLIST = {
+  feesRequested: 2,  // "Fees requested"
+  feesReceived:  3,  // "ICA / ARA admin / inspection fee received"
+  bondRequested: 4,  // "Security bond / LOC requested"
+  bondReceived:  5,  // "Security bond / LOC received"
+  sent:          8,  // "Sent to municipality (partially executed)"
+  fullyExecuted: 10  // "Fully executed"
+};
+
+function applyDateAutoChecks(project) {
+  if (!Array.isArray(project.checks)) project.checks = CHECKLIST.map(() => false);
+  Object.entries(DATE_TO_CHECKLIST).forEach(([field, idx]) => {
+    if (project[field]) project.checks[idx] = true;
+  });
+  return project;
+}
+
 // Detect admin mode from URL: ?admin=qualico-admin-2025
 const urlParams  = new URLSearchParams(window.location.search);
 const isAdmin    = urlParams.get('admin') === ADMIN_SECRET;
@@ -526,6 +551,7 @@ async function loadProjects() {
   document.getElementById('loading-overlay').classList.remove('hidden');
   try {
     projects = await apiGet();
+    projects = projects.map(applyDateAutoChecks);
     renderAll();
   } catch(err) {
     showError('Could not load projects. Check your SCRIPT_URL in index.html. (' + err.message + ')');
@@ -656,6 +682,14 @@ function setTab(tab, el) {
   document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   renderAll();
+}
+
+function setSortFromDropdown() {
+  const val = document.getElementById('sort-select').value;
+  const [field, dir] = val.split('-');
+  sortField = field;
+  sortDir   = dir;
+  renderTable();
 }
 
 function sortBy(field) {
@@ -883,6 +917,7 @@ async function saveProject() {
   try {
     const res = await apiPost({ action: 'save', secret: ADMIN_SECRET, project });
     if (!editingId && res.id) project.id = res.id;
+    applyDateAutoChecks(project);
     if (editingId) {
       const idx = projects.findIndex(x => x.id === editingId);
       if (idx >= 0) projects[idx] = project;
