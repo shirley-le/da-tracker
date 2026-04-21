@@ -1049,7 +1049,7 @@ async function toggleCheck(pid, idx) {
   renderAll();
   showSync('Saving checklist…', 'saving');
   try {
-    await apiPost({ action: 'updateChecks', id: pid, checks: p.checks, nas: p.nas });
+    await apiPost({ action: 'updateChecks', secret: ADMIN_SECRET, id: pid, checks: p.checks, nas: p.nas });
     showSync('Saved', 'done');
   } catch(err) {
     showSync('Save failed — ' + err.message, 'error');
@@ -1068,7 +1068,7 @@ async function toggleNA(pid, idx) {
   renderAll();
   showSync('Saving…', 'saving');
   try {
-    await apiPost({ action: 'updateChecks', id: pid, checks: p.checks, nas: p.nas });
+    await apiPost({ action: 'updateChecks', secret: ADMIN_SECRET, id: pid, checks: p.checks, nas: p.nas });
     showSync('Saved', 'done');
   } catch(err) {
     showSync('Save failed — ' + err.message, 'error');
