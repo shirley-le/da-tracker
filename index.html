@@ -27,8 +27,6 @@
   }
   html { font-size: 14px; }
   body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-800); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-
-  /* HEADER */
   .site-header { background: var(--navy-dark); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 12px rgba(0,0,0,0.18); }
   .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 1.5rem; }
   .logo-block { display: flex; align-items: center; gap: 14px; }
@@ -44,30 +42,20 @@
   .header-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.12); }
   .btn-add-header { background: var(--gold); color: var(--navy-dark); border: none; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: var(--radius-sm); cursor: pointer; letter-spacing: 0.02em; transition: background var(--transition), transform var(--transition); white-space: nowrap; }
   .btn-add-header:hover { background: var(--gold-mid); transform: translateY(-1px); }
-
-  /* ADMIN BADGE */
   .admin-badge { display: flex; align-items: center; gap: 6px; background: rgba(200,150,12,0.15); border: 1px solid rgba(200,150,12,0.4); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--gold-mid); letter-spacing: 0.04em; text-transform: uppercase; }
   .admin-badge svg { width: 11px; height: 11px; }
-
-  /* LOADING OVERLAY */
   .loading-overlay { position: fixed; inset: 0; background: rgba(17,29,51,0.7); z-index: 300; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
   .loading-overlay.hidden { display: none; }
   .spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { color: rgba(255,255,255,0.7); font-size: 13px; letter-spacing: 0.04em; }
-
-  /* SYNC INDICATOR */
   .sync-bar { background: var(--navy-xlight); border-bottom: 1px solid var(--navy-light); padding: 6px 2rem; font-size: 11px; color: var(--navy); display: flex; align-items: center; gap: 8px; }
   .sync-bar.hidden { display: none; }
   .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: pulse 1.2s ease-in-out infinite; flex-shrink: 0; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
   .sync-dot.done { background: var(--green); animation: none; }
   .sync-dot.error { background: var(--red); animation: none; }
-
-  /* MAIN */
   .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-
-  /* SUMMARY CARDS */
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.75rem; }
   .sum-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-100); padding: 1.25rem 1.5rem; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; transition: box-shadow var(--transition), transform var(--transition); }
   .sum-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
@@ -80,8 +68,6 @@
   .sum-card.inprogress .sum-num { color: var(--gold); }
   .sum-card.complete .sum-num { color: var(--green); }
   .sum-label { font-size: 12px; color: var(--gray-400); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; }
-
-  /* TOOLBAR */
   .toolbar { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-100); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); }
   .toolbar-left { display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap; }
   .search-wrap { position: relative; flex: 1; min-width: 200px; }
@@ -92,8 +78,6 @@
   .filter-select:focus { border-color: var(--navy); outline: none; }
   .export-btn { background: none; border: 1px solid var(--gray-200); color: var(--gray-600); font-family: var(--font-body); font-size: 12px; font-weight: 500; padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: border-color var(--transition), color var(--transition), background var(--transition); white-space: nowrap; }
   .export-btn:hover { border-color: var(--navy); color: var(--navy); background: var(--navy-xlight); }
-
-  /* TABS */
   .tabs { display: flex; gap: 0; margin-bottom: 1rem; border-bottom: 2px solid var(--gray-100); }
   .tab-btn { background: none; border: none; font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--gray-400); padding: 10px 18px; cursor: pointer; position: relative; transition: color var(--transition); letter-spacing: 0.02em; }
   .tab-btn::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background: var(--navy); transform: scaleX(0); transition: transform var(--transition); }
@@ -102,8 +86,6 @@
   .tab-btn:hover:not(.active) { color: var(--gray-600); }
   .tab-count { display: inline-block; background: var(--gray-100); color: var(--gray-400); font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 20px; margin-left: 5px; vertical-align: middle; }
   .tab-btn.active .tab-count { background: var(--navy-light); color: var(--navy); }
-
-  /* TABLE */
   .table-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-100); overflow: hidden; box-shadow: var(--shadow-sm); }
   .table-scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; min-width: 860px; }
@@ -139,8 +121,6 @@
   .icon-btn:hover { background: var(--gray-100); color: var(--gray-800); border-color: var(--gray-200); }
   .icon-btn.expand-btn.open { background: var(--navy-light); color: var(--navy); }
   .icon-btn.del:hover { background: var(--red-light); color: var(--red); border-color: #f7c1c1; }
-
-  /* DETAIL ROW */
   .detail-row td { background: var(--navy-xlight); padding: 1rem 1.5rem 1.25rem; border-bottom: 1px solid var(--navy-light) !important; }
   .checklist-header { font-size: 11px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .checklist-header span { font-size: 10px; background: var(--navy-light); color: var(--navy); padding: 2px 8px; border-radius: 20px; font-weight: 500; letter-spacing: 0.04em; }
@@ -174,16 +154,12 @@
   .kd-value { font-size: 13px; color: var(--gray-800); font-weight: 500; }
   .kd-item.has-date .kd-value { color: var(--green); }
   .kd-empty { font-size: 12px; color: var(--gray-400); font-style: italic; font-weight: 400; }
-
-  /* EMPTY STATE */
   .empty-state { padding: 4rem 2rem; text-align: center; color: var(--gray-400); }
   .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
   .empty-title { font-family: var(--font-display); font-size: 20px; color: var(--gray-600); margin-bottom: 6px; }
   .empty-text { font-size: 13px; margin-bottom: 1.5rem; }
   .empty-btn { background: var(--navy); color: #fff; border: none; font-family: var(--font-body); font-size: 13px; font-weight: 500; padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer; }
   .empty-btn:hover { background: var(--navy-mid); }
-
-  /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(17,29,51,0.55); z-index: 200; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(2px); }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: modal-in 0.2s ease; }
@@ -206,20 +182,13 @@
   .btn-cancel:hover { border-color: var(--gray-400); color: var(--gray-800); }
   .btn-save { background: var(--navy); color: #fff; border: none; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition), transform var(--transition); }
   .btn-save:hover { background: var(--navy-mid); transform: translateY(-1px); }
-
-  /* TOAST */
   .toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy-dark); color: #fff; font-size: 13px; padding: 12px 18px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); z-index: 999; opacity: 0; transform: translateY(12px); transition: all 0.25s ease; pointer-events: none; }
   .toast.show { opacity: 1; transform: none; }
   .toast.error-toast { background: var(--red); }
-
-  /* FOOTER */
   .site-footer { text-align: center; padding: 2rem; color: var(--gray-400); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
   .site-footer span { color: var(--gold); }
-
-  /* ERROR BANNER */
   .error-banner { background: var(--red-light); border: 1px solid #f7c1c1; border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 1rem; font-size: 13px; color: var(--red); display: none; }
   .error-banner.show { display: block; }
-
   @media (max-width: 700px) {
     .main-container { padding: 1rem; }
     .form-grid { grid-template-columns: 1fr; }
@@ -227,50 +196,36 @@
     .header-stat { display: none; }
     .header-divider { display: none; }
   }
-
-  /* TOP-LEVEL TRACKER TABS (DA vs Land Dev) */
   .tracker-tab-bar { background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08); }
   .tracker-tab-bar-inner { max-width: 1400px; margin: 0 auto; padding: 0 2rem; display: flex; }
   .tracker-tab { background: none; border: none; border-bottom: 3px solid transparent; font-family: var(--font-body); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); padding: 11px 20px; cursor: pointer; transition: color 0.18s, border-color 0.18s; letter-spacing: 0.02em; }
   .tracker-tab:hover { color: rgba(255,255,255,0.8); }
   .tracker-tab.active { color: #fff; border-bottom-color: var(--gold); }
-
-  /* TRACKER PANELS */
   .tracker-panel { display: none; }
   .tracker-panel.active { display: block; }
-
-  /* LAND DEV TABLE */
   .ld-table-scroll { overflow-x: auto; }
   .ld-table { min-width: 1100px; }
   .ld-notes-cell { max-width: 180px; white-space: normal; font-size: 12px; color: var(--gray-400); }
-
-  /* LAND DEV STATUS PILLS */
-  .s-prelim       { background: var(--gray-100); color: var(--gray-600); }
-  .s-review       { background: var(--navy-light); color: var(--navy); }
-  .s-in-circ      { background: #E0F4F7; color: #0E6E82; }
-  .s-sa-agenda    { background: var(--green-light); color: var(--green); }
-  .s-fees-paid    { background: #EAF7DE; color: #2E7D32; }
-  .s-approved     { background: var(--green-light); color: var(--green); }
-  .s-stuck        { background: var(--red-light); color: var(--red); }
+  .s-prelim { background: var(--gray-100); color: var(--gray-600); }
+  .s-review { background: var(--navy-light); color: var(--navy); }
+  .s-in-circ { background: #E0F4F7; color: #0E6E82; }
+  .s-sa-agenda { background: var(--green-light); color: var(--green); }
+  .s-fees-paid { background: #EAF7DE; color: #2E7D32; }
+  .s-approved { background: var(--green-light); color: var(--green); }
+  .s-stuck { background: var(--red-light); color: var(--red); }
   .s-eng-drawings { background: #FEF3E2; color: #8B4000; }
-  .s-awaiting-ph  { background: #F3EAFE; color: #5B2D8E; }
-
-  /* NEIGHBOURHOOD DATALIST HINT */
+  .s-awaiting-ph { background: #F3EAFE; color: #5B2D8E; }
   .field-hint { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
-
-  /* LD MODAL */
   .modal-ld { max-width: 600px; }
 </style>
 </head>
 <body>
 
-<!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loading-overlay">
   <div class="spinner"></div>
   <div class="loading-text">Loading projects…</div>
 </div>
 
-<!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <div class="logo-block">
@@ -307,7 +262,6 @@
   </div>
 </header>
 
-<!-- TRACKER TAB BAR -->
 <div class="tracker-tab-bar">
   <div class="tracker-tab-bar-inner">
     <button class="tracker-tab active" id="ttab-da" onclick="switchTrackerTab('da')">Development Agreements</button>
@@ -315,7 +269,6 @@
   </div>
 </div>
 
-<!-- SYNC BAR -->
 <div class="sync-bar hidden" id="sync-bar">
   <div class="sync-dot" id="sync-dot"></div>
   <span id="sync-msg">Saving…</span>
@@ -325,14 +278,12 @@
 <div class="tracker-panel active" id="panel-da">
 <main class="main-container">
   <div class="error-banner" id="error-banner"></div>
-
   <div class="summary-grid">
     <div class="sum-card total"><div class="sum-num" id="sum-total">0</div><div class="sum-label">Total Projects</div></div>
     <div class="sum-card inprogress"><div class="sum-num" id="sum-inprogress">0</div><div class="sum-label">In Progress</div></div>
     <div class="sum-card complete"><div class="sum-num" id="sum-complete">0</div><div class="sum-label">Complete</div></div>
     <div class="sum-card notstarted"><div class="sum-num" id="sum-notstarted">0</div><div class="sum-label">Not Started</div></div>
   </div>
-
   <div class="toolbar">
     <div class="toolbar-left">
       <div class="search-wrap">
@@ -365,14 +316,12 @@
       Export CSV
     </button>
   </div>
-
   <div class="tabs">
     <button class="tab-btn active" id="tab-all" onclick="setTab('all', this)">All <span class="tab-count" id="tc-all">0</span></button>
     <button class="tab-btn" id="tab-ica" onclick="setTab('ica', this)">ICA <span class="tab-count" id="tc-ica">0</span></button>
     <button class="tab-btn" id="tab-psa" onclick="setTab('psa', this)">PSA <span class="tab-count" id="tc-psa">0</span></button>
     <button class="tab-btn" id="tab-both" onclick="setTab('both', this)">ICA + PSA <span class="tab-count" id="tc-both">0</span></button>
   </div>
-
   <div class="table-card">
     <div class="table-scroll">
       <table>
@@ -400,24 +349,19 @@
     </div>
   </div>
 </main>
-
-<footer class="site-footer">
-  <span>Qualico Communities</span> &mdash; Development Agreement Tracker &mdash; Edmonton Region
-</footer>
-</div><!-- end panel-da -->
+<footer class="site-footer"><span>Qualico Communities</span> &mdash; Development Agreement Tracker &mdash; Edmonton Region</footer>
+</div>
 
 <!-- LAND DEV PANEL -->
 <div class="tracker-panel" id="panel-ld">
 <main class="main-container">
   <div class="error-banner" id="ld-error-banner"></div>
-
   <div class="summary-grid" id="ld-summary-grid">
     <div class="sum-card total"><div class="sum-num" id="ld-sum-total">0</div><div class="sum-label">Total</div></div>
     <div class="sum-card inprogress"><div class="sum-num" id="ld-sum-active">0</div><div class="sum-label">Active</div></div>
     <div class="sum-card complete"><div class="sum-num" id="ld-sum-approved">0</div><div class="sum-label">Approved</div></div>
     <div class="sum-card notstarted"><div class="sum-num" id="ld-sum-stuck">0</div><div class="sum-label">Stuck</div></div>
   </div>
-
   <div class="toolbar">
     <div class="toolbar-left">
       <div class="search-wrap">
@@ -426,24 +370,14 @@
       </div>
       <select class="filter-select" id="ld-status-filter" onchange="renderLD()">
         <option value="">All statuses</option>
-        <option>On Prelim Agenda</option>
-        <option>To Review Comments</option>
-        <option>In Circ</option>
-        <option>On SA Agenda</option>
-        <option>Fees Paid</option>
-        <option>Approved</option>
-        <option>Stuck</option>
-        <option>Engineering Drawings</option>
-        <option>Awaiting PH</option>
+        <option>On Prelim Agenda</option><option>To Review Comments</option><option>In Circ</option>
+        <option>On SA Agenda</option><option>Fees Paid</option><option>Approved</option>
+        <option>Stuck</option><option>Engineering Drawings</option><option>Awaiting PH</option>
       </select>
       <select class="filter-select" id="ld-type-filter" onchange="renderLD()">
         <option value="">All types</option>
-        <option>Subdivision</option>
-        <option>Rezoning</option>
-        <option>Plan Amendment</option>
-        <option>Land Swap</option>
-        <option>Road Closure</option>
-        <option>Registration</option>
+        <option>Subdivision</option><option>Rezoning</option><option>Plan Amendment</option>
+        <option>Land Swap</option><option>Road Closure</option><option>Registration</option>
       </select>
       <select class="filter-select" id="ld-nbhd-filter" onchange="renderLD()">
         <option value="">All neighbourhoods</option>
@@ -451,7 +385,6 @@
     </div>
     <button class="btn-add-header" id="btn-add-ld" style="display:none;" onclick="openLDModal()">+ Add Application</button>
   </div>
-
   <div class="table-card">
     <div class="ld-table-scroll">
       <table class="ld-table">
@@ -462,10 +395,8 @@
             <th>Type of File</th>
             <th class="sortable" onclick="sortLD('appNo')">LDA / App. No. <span class="sort-arrow"></span></th>
             <th class="sortable" onclick="sortLD('status')">Status <span class="sort-arrow"></span></th>
-            <th>File Planner</th>
-            <th>Consultant</th>
-            <th>Eng. Dwg 1st Sub.</th>
-            <th>Eng. Dwg 2nd Sub.</th>
+            <th>File Planner</th><th>Consultant</th>
+            <th>Eng. Dwg 1st Sub.</th><th>Eng. Dwg 2nd Sub.</th>
             <th>Notes</th>
             <th style="width:80px;" id="ld-actions-th"></th>
           </tr>
@@ -481,12 +412,10 @@
     </div>
   </div>
 </main>
-<footer class="site-footer">
-  <span>Qualico Communities</span> &mdash; Land Development Tracker &mdash; Edmonton Region
-</footer>
-</div><!-- end panel-ld -->
+<footer class="site-footer"><span>Qualico Communities</span> &mdash; Land Development Tracker &mdash; Edmonton Region</footer>
+</div>
 
-<!-- MODAL (admin only) -->
+<!-- DA MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
     <div class="modal-header">
@@ -501,11 +430,7 @@
         </div>
         <div class="form-row">
           <label>Agreement Type</label>
-          <select id="f-type">
-            <option value="ICA">ICA</option>
-            <option value="PSA">PSA</option>
-            <option value="ICA + PSA">ICA + PSA</option>
-          </select>
+          <select id="f-type"><option value="ICA">ICA</option><option value="PSA">PSA</option><option value="ICA + PSA">ICA + PSA</option></select>
         </div>
         <div class="form-row">
           <label>DA #</label>
@@ -513,37 +438,18 @@
         </div>
         <div class="form-row">
           <label>Status</label>
-          <select id="f-status">
-            <option value="Not started">Not started</option>
-            <option value="In progress">In progress</option>
-            <option value="Complete">Complete</option>
-          </select>
+          <select id="f-status"><option value="Not started">Not started</option><option value="In progress">In progress</option><option value="Complete">Complete</option></select>
         </div>
         <div class="form-row">
           <label>Municipality Sent Date (Partially Executed)</label>
           <input type="date" id="f-sent" />
         </div>
         <div class="form-section-label">Key Dates</div>
-        <div class="form-row">
-          <label>Fees Requested</label>
-          <input type="date" id="f-fees-requested" />
-        </div>
-        <div class="form-row">
-          <label>Fees Received</label>
-          <input type="date" id="f-fees-received" />
-        </div>
-        <div class="form-row">
-          <label>Security Bond / LOC Requested</label>
-          <input type="date" id="f-bond-requested" />
-        </div>
-        <div class="form-row">
-          <label>Security Bond / LOC Received</label>
-          <input type="date" id="f-bond-received" />
-        </div>
-        <div class="form-row">
-          <label>Fully Executed Date</label>
-          <input type="date" id="f-fully-executed" />
-        </div>
+        <div class="form-row"><label>Fees Requested</label><input type="date" id="f-fees-requested" /></div>
+        <div class="form-row"><label>Fees Received</label><input type="date" id="f-fees-received" /></div>
+        <div class="form-row"><label>Security Bond / LOC Requested</label><input type="date" id="f-bond-requested" /></div>
+        <div class="form-row"><label>Security Bond / LOC Received</label><input type="date" id="f-bond-received" /></div>
+        <div class="form-row"><label>Fully Executed Date</label><input type="date" id="f-fully-executed" /></div>
         <div class="form-row">
           <label>CP Date <span style="font-size:10px;color:var(--gray-400);font-weight:400;text-transform:none;">(City of Edmonton only)</span></label>
           <input type="date" id="f-cp-date" />
@@ -576,62 +482,31 @@
           <datalist id="ld-nbhd-datalist"></datalist>
           <div class="field-hint">Type a new name to add it permanently</div>
         </div>
-        <div class="form-row">
-          <label>Stage</label>
-          <input type="text" id="ld-f-stage" placeholder="e.g. Stage 3"/>
-        </div>
+        <div class="form-row"><label>Stage</label><input type="text" id="ld-f-stage" placeholder="e.g. Stage 3"/></div>
         <div class="form-row">
           <label>Type of File</label>
           <select id="ld-f-fileType">
             <option value="">— Select —</option>
-            <option>Subdivision</option>
-            <option>Rezoning</option>
-            <option>Plan Amendment</option>
-            <option>Land Swap</option>
-            <option>Road Closure</option>
-            <option>Registration</option>
+            <option>Subdivision</option><option>Rezoning</option><option>Plan Amendment</option>
+            <option>Land Swap</option><option>Road Closure</option><option>Registration</option>
           </select>
         </div>
-        <div class="form-row">
-          <label>LDA / App. No.</label>
-          <input type="text" id="ld-f-appNo" placeholder="e.g. LDA-2024-042"/>
-        </div>
+        <div class="form-row"><label>LDA / App. No.</label><input type="text" id="ld-f-appNo" placeholder="e.g. LDA-2024-042"/></div>
         <div class="form-row">
           <label>Status</label>
           <select id="ld-f-status">
             <option value="">— Select —</option>
-            <option>On Prelim Agenda</option>
-            <option>To Review Comments</option>
-            <option>In Circ</option>
-            <option>On SA Agenda</option>
-            <option>Fees Paid</option>
-            <option>Approved</option>
-            <option>Stuck</option>
-            <option>Engineering Drawings</option>
-            <option>Awaiting PH</option>
+            <option>On Prelim Agenda</option><option>To Review Comments</option><option>In Circ</option>
+            <option>On SA Agenda</option><option>Fees Paid</option><option>Approved</option>
+            <option>Stuck</option><option>Engineering Drawings</option><option>Awaiting PH</option>
           </select>
         </div>
-        <div class="form-row">
-          <label>File Planner</label>
-          <input type="text" id="ld-f-planner" placeholder="Name"/>
-        </div>
-        <div class="form-row" style="grid-column:1/-1">
-          <label>Consultant</label>
-          <input type="text" id="ld-f-consultant" placeholder="Firm / Name"/>
-        </div>
+        <div class="form-row"><label>File Planner</label><input type="text" id="ld-f-planner" placeholder="Name"/></div>
+        <div class="form-row" style="grid-column:1/-1"><label>Consultant</label><input type="text" id="ld-f-consultant" placeholder="Firm / Name"/></div>
         <div class="form-section-label">Engineering Drawing Dates</div>
-        <div class="form-row">
-          <label>1st Submission</label>
-          <input type="date" id="ld-f-engDate1"/>
-        </div>
-        <div class="form-row">
-          <label>2nd Submission</label>
-          <input type="date" id="ld-f-engDate2"/>
-        </div>
-        <div class="form-row" style="grid-column:1/-1">
-          <label>Notes</label>
-          <textarea id="ld-f-notes" placeholder="Optional notes…"></textarea>
-        </div>
+        <div class="form-row"><label>1st Submission</label><input type="date" id="ld-f-engDate1"/></div>
+        <div class="form-row"><label>2nd Submission</label><input type="date" id="ld-f-engDate2"/></div>
+        <div class="form-row" style="grid-column:1/-1"><label>Notes</label><textarea id="ld-f-notes" placeholder="Optional notes…"></textarea></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -644,12 +519,8 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ============================================================
-// CONFIGURATION — update these two values after setup
-// ============================================================
 const SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbyhFn10lf7_AIvo79zS_hB6Rx3HumaryE_2IwHkTXVDdOc9dGEeuUchhuUyrjvxd7BUeg/exec';
-const ADMIN_SECRET = 'shirley-admin-2026';  // must match Code.gs
-// ============================================================
+const ADMIN_SECRET = 'shirley-admin-2026';
 
 const CHECKLIST = [
   "With management for signing",
@@ -665,29 +536,21 @@ const CHECKLIST = [
   "Fully executed"
 ];
 
-// CP Date is not a checklist item — it's a key date field only (CoE projects)
-// Index constants for special checklist items
-const IDX_WITH_MGMT      = 0; // "With management for signing"
-const IDX_AGREEMENT      = 1; // "Agreement signed, sealed, scanned, saved"
-
-// No checklist items default to N/A anymore (CP Date removed from checklist)
+const IDX_WITH_MGMT      = 0;
+const IDX_AGREEMENT      = 1;
 const CHECKLIST_NA_DEFAULT = [];
 
-let projects    = [];
+let projects     = [];
 let expandedRows = new Set();
-let editingId   = null;
-let activeTab   = 'all';
-let sortField   = 'name';
-let sortDir     = 'asc';
+let editingId    = null;
+let activeTab    = 'all';
+let sortField    = 'name';
+let sortDir      = 'asc';
 
-// Map date fields to their corresponding checklist item indexes
 const DATE_TO_CHECKLIST = {
-  feesRequested: 2,  // "Fees requested"
-  feesReceived:  3,  // "ICA / ARA admin / inspection fee received"
-  bondRequested: 4,  // "Security bond / LOC requested"
-  bondReceived:  5,  // "Security bond / LOC received"
-  sent:          8,  // "Sent to municipality (partially executed)"
-  fullyExecuted: 10  // "Fully executed"
+  feesRequested: 2, feesReceived: 3,
+  bondRequested: 4, bondReceived: 5,
+  sent: 8, fullyExecuted: 10
 };
 
 function applyDateAutoChecks(project) {
@@ -698,11 +561,9 @@ function applyDateAutoChecks(project) {
   return project;
 }
 
-// Detect admin mode from URL: ?admin=qualico-admin-2025
-const urlParams  = new URLSearchParams(window.location.search);
-const isAdmin    = urlParams.get('admin') === ADMIN_SECRET;
+const urlParams = new URLSearchParams(window.location.search);
+const isAdmin   = urlParams.get('admin') === ADMIN_SECRET;
 
-// ---- INIT ----
 window.addEventListener('DOMContentLoaded', () => {
   if (isAdmin) {
     document.getElementById('admin-badge').style.display    = 'flex';
@@ -719,34 +580,23 @@ window.addEventListener('DOMContentLoaded', () => {
   loadAll();
 });
 
-// ---- API CALLS ----
 function jsonpGet(action) {
   return new Promise((resolve, reject) => {
     const cbName = 'cb_' + Math.random().toString(36).substr(2, 8);
     const script = document.createElement('script');
-    const timeout = setTimeout(() => {
-      cleanup();
-      reject(new Error('Request timed out — check your SCRIPT_URL'));
-    }, 15000);
-    function cleanup() {
-      clearTimeout(timeout);
-      delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    }
+    const timeout = setTimeout(() => { cleanup(); reject(new Error('Request timed out')); }, 15000);
+    function cleanup() { clearTimeout(timeout); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
     window[cbName] = function(data) { cleanup(); resolve(data); };
-    script.onerror = () => { cleanup(); reject(new Error('Script load failed — check your SCRIPT_URL')); };
+    script.onerror = () => { cleanup(); reject(new Error('Script load failed')); };
     script.src = SCRIPT_URL + '?action=' + action + '&callback=' + cbName + '&_=' + Date.now();
     document.head.appendChild(script);
   });
 }
 
-// Keep old name for backwards compat used in loadProjects
-function apiGet() { return jsonpGet('getDA').then(d => { if (!d.ok) throw new Error(d.error); return d.projects; }); }
-
 async function apiPost(body) {
   const form = new FormData();
   form.append('data', JSON.stringify(body));
-  const res = await fetch(SCRIPT_URL, { method: 'POST', body: form });
+  const res  = await fetch(SCRIPT_URL, { method: 'POST', body: form });
   const data = await res.json();
   if (!data.ok) throw new Error(data.error || 'Save failed');
   return data;
@@ -756,54 +606,39 @@ async function loadAll() {
   document.getElementById('loading-overlay').classList.remove('hidden');
   try {
     const [daData, ldData, nbhdData] = await Promise.all([
-      jsonpGet('getDA'),
-      jsonpGet('getLandDev'),
-      jsonpGet('getNeighbourhoods')
+      jsonpGet('getDA'), jsonpGet('getLandDev'), jsonpGet('getNeighbourhoods')
     ]);
     projects = (daData.projects || []).map(applyDateAutoChecks);
     ldProjects = ldData.projects || [];
-    if (nbhdData.neighbourhoods && nbhdData.neighbourhoods.length) {
-      ldNeighbourhoods = nbhdData.neighbourhoods;
-    }
-    renderAll();
-    renderLD();
-    populateLDNeighbourhoodFilters();
+    if (nbhdData.neighbourhoods && nbhdData.neighbourhoods.length) ldNeighbourhoods = nbhdData.neighbourhoods;
+    renderAll(); renderLD(); populateLDNeighbourhoodFilters();
   } catch(err) {
-    showError('Could not load projects. Check your SCRIPT_URL in index.html. (' + err.message + ')');
+    showError('Could not load projects. Check your SCRIPT_URL. (' + err.message + ')');
   } finally {
     document.getElementById('loading-overlay').classList.add('hidden');
   }
 }
 
-async function loadProjects() { return loadAll(); }
-
 function showSync(msg, state) {
-  const bar  = document.getElementById('sync-bar');
-  const dot  = document.getElementById('sync-dot');
-  const text = document.getElementById('sync-msg');
+  const bar = document.getElementById('sync-bar');
+  const dot = document.getElementById('sync-dot');
   bar.classList.remove('hidden');
   dot.className = 'sync-dot' + (state === 'done' ? ' done' : state === 'error' ? ' error' : '');
-  text.textContent = msg;
-  if (state !== 'saving') {
-    clearTimeout(bar._t);
-    bar._t = setTimeout(() => bar.classList.add('hidden'), 2500);
-  }
+  document.getElementById('sync-msg').textContent = msg;
+  if (state !== 'saving') { clearTimeout(bar._t); bar._t = setTimeout(() => bar.classList.add('hidden'), 2500); }
 }
 
 function showError(msg) {
   const b = document.getElementById('error-banner');
-  b.textContent = msg;
-  b.classList.add('show');
+  b.textContent = msg; b.classList.add('show');
 }
 
-// ---- HELPERS ----
 function calcProgress(p) {
   const checks = Array.isArray(p.checks) ? p.checks : [];
   const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(() => false);
   const agreementSigned = checks[IDX_AGREEMENT];
   let done = 0, total = 0;
   CHECKLIST.forEach((_, i) => {
-    // Once Agreement Signed is checked, "With management for signing" is no longer counted
     if (i === IDX_WITH_MGMT && agreementSigned) return;
     if (!nas[i]) { total++; if (checks[i]) done++; }
   });
@@ -812,10 +647,8 @@ function calcProgress(p) {
 
 function derivedStatus(p) {
   const checks = Array.isArray(p.checks) ? p.checks : [];
-  const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(() => false);
   const { done, total } = calcProgress(p);
   if (total === 0) return 'Complete';
-  // "With Signing" badge: item 0 checked but item 1 (Agreement Signed) not yet checked
   if (checks[IDX_WITH_MGMT] && !checks[IDX_AGREEMENT]) return 'Out for signing';
   if (done === 0) return 'Not started';
   if (done === total) return 'Complete';
@@ -823,98 +656,80 @@ function derivedStatus(p) {
 }
 
 function statusClass(s) {
-  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Not started': 's-not-started', 'Out for signing': 's-with-signing' }[s] || 's-not-started';
+  return {'Complete':'s-complete','In progress':'s-in-progress','Not started':'s-not-started','Out for signing':'s-with-signing'}[s] || 's-not-started';
 }
-
 function typeClass(t) {
-  return { 'ICA': 'badge-ica', 'PSA': 'badge-psa', 'ICA + PSA': 'badge-both' }[t] || 'badge-ica';
+  return {'ICA':'badge-ica','PSA':'badge-psa','ICA + PSA':'badge-both'}[t] || 'badge-ica';
 }
-
 function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function fmtDate(d) {
   if (!d) return '—';
-  // Handle YYYY-MM-DD (from date inputs) and other formats safely
   let dt;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) {
-    // Parse as local date to avoid timezone shifting
-    const [y, m, day] = d.split('-').map(Number);
-    dt = new Date(y, m - 1, day);
-  } else {
-    dt = new Date(d);
-  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) { const [y,m,day]=d.split('-').map(Number); dt=new Date(y,m-1,day); }
+  else dt = new Date(d);
   if (isNaN(dt.getTime())) return '—';
-  return dt.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' });
+  return dt.toLocaleDateString('en-CA', {year:'numeric',month:'short',day:'numeric'});
 }
 
 function filteredProjects() {
-  const q  = (document.getElementById('search-input').value || '').toLowerCase();
+  const q  = (document.getElementById('search-input').value||'').toLowerCase();
   const sf = document.getElementById('status-filter').value;
   const tf = document.getElementById('type-filter').value;
   return projects.filter(p => {
-    if (activeTab === 'ica'  && p.type !== 'ICA') return false;
-    if (activeTab === 'psa'  && p.type !== 'PSA') return false;
-    if (activeTab === 'both' && p.type !== 'ICA + PSA') return false;
+    if (activeTab==='ica'  && p.type!=='ICA') return false;
+    if (activeTab==='psa'  && p.type!=='PSA') return false;
+    if (activeTab==='both' && p.type!=='ICA + PSA') return false;
     if (q  && !p.name.toLowerCase().includes(q) && !(p.da||'').toLowerCase().includes(q)) return false;
-    if (sf && derivedStatus(p) !== sf) return false;
-    if (tf && p.type !== tf) return false;
+    if (sf && derivedStatus(p)!==sf) return false;
+    if (tf && p.type!==tf) return false;
     return true;
-  }).sort((a, b) => {
-    let va = sortField === 'name' ? a.name : sortField === 'da' ? (a.da||'') : (a.sent||'');
-    let vb = sortField === 'name' ? b.name : sortField === 'da' ? (b.da||'') : (b.sent||'');
-    if (va < vb) return sortDir === 'asc' ? -1 : 1;
-    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+  }).sort((a,b) => {
+    let va = sortField==='name' ? a.name : sortField==='da' ? (a.da||'') : (a.sent||'');
+    let vb = sortField==='name' ? b.name : sortField==='da' ? (b.da||'') : (b.sent||'');
+    if (va<vb) return sortDir==='asc'?-1:1;
+    if (va>vb) return sortDir==='asc'?1:-1;
     return 0;
   });
 }
 
-// ---- RENDER ----
-function renderAll() {
-  renderTable();
-  updateSummary();
-  updateTabs();
-}
+function renderAll() { renderTable(); updateSummary(); updateTabs(); }
 
 function updateSummary() {
   document.getElementById('sum-total').textContent      = projects.length;
-  document.getElementById('sum-inprogress').textContent = projects.filter(p => derivedStatus(p) === 'In progress').length;
-  document.getElementById('sum-complete').textContent   = projects.filter(p => derivedStatus(p) === 'Complete').length;
-  document.getElementById('sum-notstarted').textContent = projects.filter(p => derivedStatus(p) === 'Not started').length;
+  document.getElementById('sum-inprogress').textContent = projects.filter(p=>derivedStatus(p)==='In progress').length;
+  document.getElementById('sum-complete').textContent   = projects.filter(p=>derivedStatus(p)==='Complete').length;
+  document.getElementById('sum-notstarted').textContent = projects.filter(p=>derivedStatus(p)==='Not started').length;
   document.getElementById('hdr-count').textContent      = projects.length;
-  const avg = projects.length ? Math.round(projects.reduce((s,p) => s + calcProgress(p).pct, 0) / projects.length) : 0;
-  document.getElementById('hdr-pct').textContent = avg + '%';
+  const avg = projects.length ? Math.round(projects.reduce((s,p)=>s+calcProgress(p).pct,0)/projects.length) : 0;
+  document.getElementById('hdr-pct').textContent = avg+'%';
 }
 
 function updateTabs() {
   document.getElementById('tc-all').textContent  = projects.length;
-  document.getElementById('tc-ica').textContent  = projects.filter(p => p.type === 'ICA').length;
-  document.getElementById('tc-psa').textContent  = projects.filter(p => p.type === 'PSA').length;
-  document.getElementById('tc-both').textContent = projects.filter(p => p.type === 'ICA + PSA').length;
+  document.getElementById('tc-ica').textContent  = projects.filter(p=>p.type==='ICA').length;
+  document.getElementById('tc-psa').textContent  = projects.filter(p=>p.type==='PSA').length;
+  document.getElementById('tc-both').textContent = projects.filter(p=>p.type==='ICA + PSA').length;
 }
 
 function setTab(tab, el) {
   activeTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  renderAll();
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); renderAll();
 }
 
 function setSortFromDropdown() {
-  const val = document.getElementById('sort-select').value;
-  const [field, dir] = val.split('-');
-  sortField = field;
-  sortDir   = dir;
-  renderTable();
+  const [field, dir] = document.getElementById('sort-select').value.split('-');
+  sortField=field; sortDir=dir; renderTable();
 }
 
 function sortBy(field) {
-  if (sortField === field) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-  else { sortField = field; sortDir = 'asc'; }
-  document.querySelectorAll('th.sortable').forEach(th => th.classList.remove('sort-asc','sort-desc'));
-  const map = { name: 0, da: 1, sent: 2 };
-  document.querySelectorAll('th.sortable')[map[field]].classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+  if (sortField===field) sortDir=sortDir==='asc'?'desc':'asc';
+  else { sortField=field; sortDir='asc'; }
+  document.querySelectorAll('th.sortable').forEach(th=>th.classList.remove('sort-asc','sort-desc'));
+  const map={name:0,da:1,sent:2};
+  document.querySelectorAll('th.sortable')[map[field]].classList.add(sortDir==='asc'?'sort-asc':'sort-desc');
   renderTable();
 }
 
@@ -922,24 +737,15 @@ function renderTable() {
   const fp    = filteredProjects();
   const tbody = document.getElementById('project-tbody');
   const empty = document.getElementById('empty-state');
-
-  if (fp.length === 0 && projects.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = '';
-    return;
-  }
-  empty.style.display = 'none';
-  if (fp.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px;">No projects match your filters.</td></tr>`;
-    return;
-  }
+  if (fp.length===0 && projects.length===0) { tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  if (fp.length===0) { tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px;">No projects match your filters.</td></tr>`; return; }
 
   tbody.innerHTML = fp.map(p => {
     const prog   = calcProgress(p);
     const status = derivedStatus(p);
     const isExp  = expandedRows.has(p.id);
-    const notesShort = (p.notes||'').length > 40 ? p.notes.substr(0,40)+'…' : (p.notes||'—');
-
+    const notesShort = (p.notes||'').length>40 ? p.notes.substr(0,40)+'…' : (p.notes||'—');
     const adminActions = isAdmin ? `
       <button class="icon-btn" onclick="openModal('${p.id}')" title="Edit">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -951,7 +757,7 @@ function renderTable() {
     const mainRow = `<tr>
       <td><button class="icon-btn expand-btn${isExp?' open':''}" onclick="toggleExpand('${p.id}')" title="Toggle checklist">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          ${isExp ? '<path d="M18 15l-6-6-6 6"/>' : '<path d="M6 9l6 6 6-6"/>'}
+          ${isExp?'<path d="M18 15l-6-6-6 6"/>':'<path d="M6 9l6 6 6-6"/>'}
         </svg>
       </button></td>
       <td class="project-name-cell">${esc(p.name)}</td>
@@ -969,34 +775,24 @@ function renderTable() {
 
     if (!isExp) return mainRow;
 
-    const checks = Array.isArray(p.checks) ? p.checks : CHECKLIST.map(() => false);
-    const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(() => false);
+    const checks = Array.isArray(p.checks) ? p.checks : CHECKLIST.map(()=>false);
+    const nas    = Array.isArray(p.nas)    ? p.nas    : CHECKLIST.map(()=>false);
     const prog2  = calcProgress(p);
     const clHtml = CHECKLIST.map((item, idx) => {
-      const checked = checks[idx];
-      const isNA    = nas[idx];
-
-      // Hide "With management for signing" once "Agreement signed" is checked
-      if (idx === IDX_WITH_MGMT && checks[IDX_AGREEMENT]) return '';
-
-      const naClass = isNA ? ' na-item' : '';
-
-      // "With management for signing" gets special styling — no strikethrough, show as active/signing state
-      const isWithMgmt = idx === IDX_WITH_MGMT;
-      const chkClass = isNA ? '' : (checked ? (isWithMgmt ? ' with-signing-item' : ' checked') : '');
-
-      const checkbox = isNA
+      const checked    = checks[idx];
+      const isNA       = nas[idx];
+      if (idx===IDX_WITH_MGMT && checks[IDX_AGREEMENT]) return '';
+      const isWithMgmt = idx===IDX_WITH_MGMT;
+      const chkClass   = isNA ? '' : (checked ? (isWithMgmt ? ' with-signing-item' : ' checked') : '');
+      const naClass    = isNA ? ' na-item' : '';
+      const checkbox   = isNA
         ? `<input type="checkbox" disabled style="opacity:0.3;" />`
-        : `<input type="checkbox" ${checked ? 'checked' : ''} onclick="event.preventDefault()" readonly />`;
-
-      const naToggle = isAdmin ? `
-        <button class="na-btn${isNA ? ' active' : ''}" onclick="toggleNA('${p.id}',${idx});event.stopPropagation();" title="${isNA ? 'Mark as required' : 'Mark as N/A'}">
-          N/A
-        </button>` : (isNA ? `<span class="na-label">N/A</span>` : '');
-
+        : `<input type="checkbox" ${checked?'checked':''} onclick="event.preventDefault()" readonly />`;
+      const naToggle = isAdmin
+        ? `<button class="na-btn${isNA?' active':''}" onclick="toggleNA('${p.id}',${idx});event.stopPropagation();" title="${isNA?'Mark as required':'Mark as N/A'}">N/A</button>`
+        : (isNA ? `<span class="na-label">N/A</span>` : '');
       const clickAttr = !isNA ? `onclick="toggleCheck('${p.id}',${idx});return false;"` : '';
-
-      return `<label class="cl-item${isNA ? '' : ' clickable'}${chkClass}${naClass}" ${clickAttr}>
+      return `<label class="cl-item${isNA?'':' clickable'}${chkClass}${naClass}" ${clickAttr}>
         ${checkbox}
         <span class="cl-label">${esc(item)}</span>
         ${isWithMgmt && checked ? `<span class="signing-badge">Out for signing</span>` : ''}
@@ -1010,16 +806,16 @@ function renderTable() {
       <div class="key-dates-panel">
         <div class="key-dates-header">Key Dates</div>
         <div class="key-dates-grid">
-          ${kdCard('Fees Requested', p.feesRequested)}
-          ${kdCard('Fees Received', p.feesReceived)}
-          ${kdCard('Security Bond / LOC Requested', p.bondRequested)}
-          ${kdCard('Security Bond / LOC Received', p.bondReceived)}
-          ${kdCard('Sent to Municipality (Partially Executed)', p.sent)}
-          ${kdCard('Fully Executed', p.fullyExecuted)}
-          ${p.cpDate ? kdCard('CP Date', p.cpDate) : ''}
+          ${kdCard('Fees Requested',p.feesRequested)}
+          ${kdCard('Fees Received',p.feesReceived)}
+          ${kdCard('Security Bond / LOC Requested',p.bondRequested)}
+          ${kdCard('Security Bond / LOC Received',p.bondReceived)}
+          ${kdCard('Sent to Municipality (Partially Executed)',p.sent)}
+          ${kdCard('Fully Executed',p.fullyExecuted)}
+          ${p.cpDate ? kdCard('CP Date',p.cpDate) : ''}
         </div>
       </div>
-      ${p.notes ? `<div class="detail-notes"><span class="detail-notes-label">Notes</span><span class="detail-notes-text">${esc(p.notes)}</span></div>` : ''}
+      ${p.notes ? `<div class="detail-notes"><span class="detail-notes-label">Notes</span><span>${esc(p.notes)}</span></div>` : ''}
     </td></tr>`;
 
     return mainRow + detailRow;
@@ -1033,386 +829,278 @@ function kdCard(label, val) {
   </div>`;
 }
 
-// ---- INTERACTIONS ----
 function toggleExpand(id) {
-  if (expandedRows.has(id)) expandedRows.delete(id);
-  else expandedRows.add(id);
+  if (expandedRows.has(id)) expandedRows.delete(id); else expandedRows.add(id);
   renderTable();
 }
 
+// *** FIX: secret now included in both toggleCheck and toggleNA ***
 async function toggleCheck(pid, idx) {
-  const p = projects.find(x => x.id === pid);
+  const p = projects.find(x=>x.id===pid);
   if (!p) return;
-  if (!Array.isArray(p.checks)) p.checks = CHECKLIST.map(() => false);
-  if (!Array.isArray(p.nas))    p.nas    = CHECKLIST.map(() => false);
+  if (!Array.isArray(p.checks)) p.checks = CHECKLIST.map(()=>false);
+  if (!Array.isArray(p.nas))    p.nas    = CHECKLIST.map(()=>false);
   p.checks[idx] = !p.checks[idx];
   renderAll();
   showSync('Saving checklist…', 'saving');
   try {
-    await apiPost({ action: 'updateChecks', id: pid, checks: p.checks, nas: p.nas });
+    await apiPost({ action: 'updateChecks', secret: ADMIN_SECRET, id: pid, checks: p.checks, nas: p.nas });
     showSync('Saved', 'done');
   } catch(err) {
-    showSync('Save failed — ' + err.message, 'error');
-    showToast('Could not save checklist: ' + err.message, true);
+    showSync('Save failed — '+err.message, 'error');
+    showToast('Could not save checklist: '+err.message, true);
   }
 }
 
 async function toggleNA(pid, idx) {
   if (!isAdmin) return;
-  const p = projects.find(x => x.id === pid);
+  const p = projects.find(x=>x.id===pid);
   if (!p) return;
-  if (!Array.isArray(p.nas)) p.nas = CHECKLIST.map(() => false);
+  if (!Array.isArray(p.nas)) p.nas = CHECKLIST.map(()=>false);
   p.nas[idx] = !p.nas[idx];
-  // If marking N/A, uncheck the item too
   if (p.nas[idx] && Array.isArray(p.checks)) p.checks[idx] = false;
   renderAll();
   showSync('Saving…', 'saving');
   try {
-    await apiPost({ action: 'updateChecks', id: pid, checks: p.checks, nas: p.nas });
+    await apiPost({ action: 'updateChecks', secret: ADMIN_SECRET, id: pid, checks: p.checks, nas: p.nas });
     showSync('Saved', 'done');
   } catch(err) {
-    showSync('Save failed — ' + err.message, 'error');
-    showToast('Could not save: ' + err.message, true);
+    showSync('Save failed — '+err.message, 'error');
+    showToast('Could not save: '+err.message, true);
   }
 }
 
-
 function openModal(id) {
   if (!isAdmin) return;
-  editingId = id || null;
+  editingId = id||null;
   document.getElementById('modal-title-text').textContent = id ? 'Edit Project' : 'Add Project';
   if (id) {
-    const p = projects.find(x => x.id === id);
+    const p = projects.find(x=>x.id===id);
     document.getElementById('f-name').value           = p.name;
     document.getElementById('f-type').value           = p.type;
-    document.getElementById('f-da').value             = p.da || '';
-    document.getElementById('f-sent').value           = p.sent || '';
-    document.getElementById('f-fees-requested').value = p.feesRequested || '';
-    document.getElementById('f-fees-received').value  = p.feesReceived || '';
-    document.getElementById('f-bond-requested').value = p.bondRequested || '';
-    document.getElementById('f-bond-received').value  = p.bondReceived || '';
-    document.getElementById('f-fully-executed').value = p.fullyExecuted || '';
-    document.getElementById('f-cp-date').value        = p.cpDate || '';
-    document.getElementById('f-notes').value          = p.notes || '';
+    document.getElementById('f-da').value             = p.da||'';
+    document.getElementById('f-sent').value           = p.sent||'';
+    document.getElementById('f-fees-requested').value = p.feesRequested||'';
+    document.getElementById('f-fees-received').value  = p.feesReceived||'';
+    document.getElementById('f-bond-requested').value = p.bondRequested||'';
+    document.getElementById('f-bond-received').value  = p.bondReceived||'';
+    document.getElementById('f-fully-executed').value = p.fullyExecuted||'';
+    document.getElementById('f-cp-date').value        = p.cpDate||'';
+    document.getElementById('f-notes').value          = p.notes||'';
   } else {
-    ['f-name','f-da','f-notes'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('f-type').value   = 'ICA';
-    document.getElementById('f-status').value = 'Not started';
-    ['f-sent','f-fees-requested','f-fees-received','f-bond-requested','f-bond-received','f-fully-executed','f-cp-date'].forEach(id => document.getElementById(id).value = '');
+    ['f-name','f-da','f-notes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-type').value='ICA';
+    document.getElementById('f-status').value='Not started';
+    ['f-sent','f-fees-requested','f-fees-received','f-bond-requested','f-bond-received','f-fully-executed','f-cp-date'].forEach(id=>document.getElementById(id).value='');
   }
   document.getElementById('modal-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('f-name').focus(), 80);
+  setTimeout(()=>document.getElementById('f-name').focus(), 80);
 }
 
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 
 async function saveProject() {
   if (!isAdmin) return;
-  const name = (document.getElementById('f-name').value || '').trim();
-  if (!name) { document.getElementById('f-name').focus(); document.getElementById('f-name').style.borderColor = '#A32D2D'; return; }
-  document.getElementById('f-name').style.borderColor = '';
-
+  const name = (document.getElementById('f-name').value||'').trim();
+  if (!name) { document.getElementById('f-name').focus(); document.getElementById('f-name').style.borderColor='#A32D2D'; return; }
+  document.getElementById('f-name').style.borderColor='';
   const project = {
-    id:             editingId || '',
-    name,
-    type:           document.getElementById('f-type').value,
-    da:             document.getElementById('f-da').value.trim(),
-    sent:           document.getElementById('f-sent').value,
-    feesRequested:  document.getElementById('f-fees-requested').value,
-    feesReceived:   document.getElementById('f-fees-received').value,
-    bondRequested:  document.getElementById('f-bond-requested').value,
-    bondReceived:   document.getElementById('f-bond-received').value,
-    fullyExecuted:  document.getElementById('f-fully-executed').value,
-    cpDate:         document.getElementById('f-cp-date').value,
-    notes:          document.getElementById('f-notes').value.trim(),
-    checks:         editingId ? (projects.find(x=>x.id===editingId)||{}).checks || CHECKLIST.map(()=>false) : CHECKLIST.map(()=>false),
-    nas:            editingId ? (projects.find(x=>x.id===editingId)||{}).nas   || CHECKLIST.map((_,i)=>CHECKLIST_NA_DEFAULT.includes(i)) : CHECKLIST.map((_,i)=>CHECKLIST_NA_DEFAULT.includes(i))
+    id: editingId||'', name,
+    type:          document.getElementById('f-type').value,
+    da:            document.getElementById('f-da').value.trim(),
+    sent:          document.getElementById('f-sent').value,
+    feesRequested: document.getElementById('f-fees-requested').value,
+    feesReceived:  document.getElementById('f-fees-received').value,
+    bondRequested: document.getElementById('f-bond-requested').value,
+    bondReceived:  document.getElementById('f-bond-received').value,
+    fullyExecuted: document.getElementById('f-fully-executed').value,
+    cpDate:        document.getElementById('f-cp-date').value,
+    notes:         document.getElementById('f-notes').value.trim(),
+    checks: editingId ? (projects.find(x=>x.id===editingId)||{}).checks||CHECKLIST.map(()=>false) : CHECKLIST.map(()=>false),
+    nas:    editingId ? (projects.find(x=>x.id===editingId)||{}).nas||CHECKLIST.map((_,i)=>CHECKLIST_NA_DEFAULT.includes(i)) : CHECKLIST.map((_,i)=>CHECKLIST_NA_DEFAULT.includes(i))
   };
-
   closeModal();
-  showSync('Saving project…', 'saving');
+  showSync('Saving project…','saving');
   try {
-    const res = await apiPost({ action: 'save', secret: ADMIN_SECRET, project });
+    const res = await apiPost({ action:'save', secret:ADMIN_SECRET, project });
     if (!editingId && res.id) project.id = res.id;
     applyDateAutoChecks(project);
-    if (editingId) {
-      const idx = projects.findIndex(x => x.id === editingId);
-      if (idx >= 0) projects[idx] = project;
-    } else {
-      projects.push(project);
-    }
-    showSync('Saved', 'done');
-    showToast(editingId ? 'Project updated' : 'Project added');
+    if (editingId) { const idx=projects.findIndex(x=>x.id===editingId); if (idx>=0) projects[idx]=project; }
+    else projects.push(project);
+    showSync('Saved','done');
+    showToast(editingId?'Project updated':'Project added');
     renderAll();
-  } catch(err) {
-    showSync('Save failed', 'error');
-    showToast('Error: ' + err.message, true);
-  }
+  } catch(err) { showSync('Save failed','error'); showToast('Error: '+err.message,true); }
 }
 
 async function confirmDelete(id) {
   if (!isAdmin) return;
-  const p = projects.find(x => x.id === id);
-  if (!p) return;
-  if (!confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
-  showSync('Deleting…', 'saving');
+  const p = projects.find(x=>x.id===id);
+  if (!p || !confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
+  showSync('Deleting…','saving');
   try {
-    await apiPost({ action: 'delete', secret: ADMIN_SECRET, id });
-    projects = projects.filter(x => x.id !== id);
+    await apiPost({ action:'delete', secret:ADMIN_SECRET, id });
+    projects = projects.filter(x=>x.id!==id);
     expandedRows.delete(id);
-    showSync('Deleted', 'done');
-    showToast('Project deleted');
-    renderAll();
-  } catch(err) {
-    showSync('Delete failed', 'error');
-    showToast('Error: ' + err.message, true);
-  }
+    showSync('Deleted','done'); showToast('Project deleted'); renderAll();
+  } catch(err) { showSync('Delete failed','error'); showToast('Error: '+err.message,true); }
 }
 
-// ---- EXPORT ----
 function exportCSV() {
   const headers = ['Project Name','Type','DA #','Status','Checklist %','Fees Requested','Fees Received','Security Bond/LOC Requested','Security Bond/LOC Received','Municipality Sent','Notes',...CHECKLIST];
   const rows = projects.map(p => {
-    const prog = calcProgress(p);
-    const checks = Array.isArray(p.checks) ? p.checks : [];
-    return [
-      `"${(p.name||'').replace(/"/g,'""')}"`, p.type, p.da||'', derivedStatus(p), prog.pct+'%',
-      p.feesRequested||'', p.feesReceived||'', p.bondRequested||'', p.bondReceived||'', p.sent||'',
+    const prog=calcProgress(p); const checks=Array.isArray(p.checks)?p.checks:[];
+    return [`"${(p.name||'').replace(/"/g,'""')}"`,p.type,p.da||'',derivedStatus(p),prog.pct+'%',
+      p.feesRequested||'',p.feesReceived||'',p.bondRequested||'',p.bondReceived||'',p.sent||'',
       `"${(p.notes||'').replace(/"/g,'""')}"`,
-      ...CHECKLIST.map((_,i) => checks[i] ? 'Yes' : 'No')
-    ].join(',');
+      ...CHECKLIST.map((_,i)=>checks[i]?'Yes':'No')].join(',');
   });
-  const csv  = [headers.join(','), ...rows].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const a    = document.createElement('a');
-  a.href     = URL.createObjectURL(blob);
-  a.download = 'qualico_da_tracker_' + new Date().toISOString().substr(0,10) + '.csv';
-  a.click();
-  showToast('CSV exported');
+  const csv=([headers.join(','),...rows]).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='qualico_da_tracker_'+new Date().toISOString().substr(0,10)+'.csv';
+  a.click(); showToast('CSV exported');
 }
 
-// ---- TOAST ----
 function showToast(msg, isError) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className   = 'toast' + (isError ? ' error-toast' : '');
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 2800);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast'+(isError?' error-toast':''); t.classList.add('show');
+  clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-// ---- KEYBOARD / CLICK OUTSIDE ----
-document.getElementById('modal-overlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
-document.getElementById('ld-modal-overlay').addEventListener('click', function(e) { if (e.target === this) closeLDModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLDModal(); } });
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('ld-modal-overlay').addEventListener('click',function(e){if(e.target===this)closeLDModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeLDModal();}});
 
-// =====================================================================
-// TRACKER TAB SWITCHING
-// =====================================================================
 function switchTrackerTab(tab) {
-  document.getElementById('panel-da').classList.toggle('active', tab === 'da');
-  document.getElementById('panel-ld').classList.toggle('active', tab === 'ld');
-  document.getElementById('ttab-da').classList.toggle('active', tab === 'da');
-  document.getElementById('ttab-ld').classList.toggle('active', tab === 'ld');
-  // Show/hide add button in header
-  document.getElementById('btn-add-header').style.display = (isAdmin && tab === 'da') ? 'block' : 'none';
+  document.getElementById('panel-da').classList.toggle('active',tab==='da');
+  document.getElementById('panel-ld').classList.toggle('active',tab==='ld');
+  document.getElementById('ttab-da').classList.toggle('active',tab==='da');
+  document.getElementById('ttab-ld').classList.toggle('active',tab==='ld');
+  document.getElementById('btn-add-header').style.display=(isAdmin&&tab==='da')?'block':'none';
 }
 
-// =====================================================================
-// LAND DEV STATE
-// =====================================================================
+// LAND DEV
 let ldProjects       = [];
-let ldNeighbourhoods = ["River's Edge", "Stillwater", "The Uplands"];
+let ldNeighbourhoods = ["River's Edge","Stillwater","The Uplands"];
 let ldEditingId      = null;
 let ldSortField      = 'neighbourhood';
 let ldSortDir        = 'asc';
 
-// =====================================================================
-// LAND DEV HELPERS
-// =====================================================================
 function ldStatusClass(s) {
-  const map = {
-    'On Prelim Agenda':   's-prelim',
-    'To Review Comments': 's-review',
-    'In Circ':            's-in-circ',
-    'On SA Agenda':       's-sa-agenda',
-    'Fees Paid':          's-fees-paid',
-    'Approved':           's-approved',
-    'Stuck':              's-stuck',
-    'Engineering Drawings': 's-eng-drawings',
-    'Awaiting PH':        's-awaiting-ph'
-  };
-  return map[s] || 's-not-started';
+  return {'On Prelim Agenda':'s-prelim','To Review Comments':'s-review','In Circ':'s-in-circ',
+    'On SA Agenda':'s-sa-agenda','Fees Paid':'s-fees-paid','Approved':'s-approved',
+    'Stuck':'s-stuck','Engineering Drawings':'s-eng-drawings','Awaiting PH':'s-awaiting-ph'}[s]||'s-not-started';
 }
 
 function populateLDNeighbourhoodFilters() {
-  // Datalist for modal
-  const dl = document.getElementById('ld-nbhd-datalist');
-  dl.innerHTML = ldNeighbourhoods.map(n => `<option value="${esc(n)}"></option>`).join('');
-  // Filter dropdown
-  const sel = document.getElementById('ld-nbhd-filter');
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">All neighbourhoods</option>' +
-    ldNeighbourhoods.map(n => `<option value="${esc(n)}"${n===cur?' selected':''}>${esc(n)}</option>`).join('');
+  document.getElementById('ld-nbhd-datalist').innerHTML = ldNeighbourhoods.map(n=>`<option value="${esc(n)}"></option>`).join('');
+  const sel=document.getElementById('ld-nbhd-filter'); const cur=sel.value;
+  sel.innerHTML='<option value="">All neighbourhoods</option>'+ldNeighbourhoods.map(n=>`<option value="${esc(n)}"${n===cur?' selected':''}>${esc(n)}</option>`).join('');
 }
 
-// =====================================================================
-// LAND DEV RENDER
-// =====================================================================
 function renderLD() {
-  const q      = (document.getElementById('ld-search-input').value || '').toLowerCase();
-  const sf     = document.getElementById('ld-status-filter').value;
-  const tf     = document.getElementById('ld-type-filter').value;
-  const nf     = document.getElementById('ld-nbhd-filter').value;
-  const tbody  = document.getElementById('ld-tbody');
-  const empty  = document.getElementById('ld-empty-state');
-
-  let list = ldProjects.filter(p => {
-    if (sf && p.status   !== sf) return false;
-    if (tf && p.fileType !== tf) return false;
-    if (nf && p.neighbourhood !== nf) return false;
-    if (q && !JSON.stringify(p).toLowerCase().includes(q)) return false;
+  const q=((document.getElementById('ld-search-input').value||'')).toLowerCase();
+  const sf=document.getElementById('ld-status-filter').value;
+  const tf=document.getElementById('ld-type-filter').value;
+  const nf=document.getElementById('ld-nbhd-filter').value;
+  const tbody=document.getElementById('ld-tbody'); const empty=document.getElementById('ld-empty-state');
+  let list=ldProjects.filter(p=>{
+    if(sf&&p.status!==sf)return false;
+    if(tf&&p.fileType!==tf)return false;
+    if(nf&&p.neighbourhood!==nf)return false;
+    if(q&&!JSON.stringify(p).toLowerCase().includes(q))return false;
     return true;
-  });
-
-  list.sort((a, b) => {
-    const av = String(a[ldSortField] || '');
-    const bv = String(b[ldSortField] || '');
-    return ldSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
-  });
-
-  // Update summary
+  }).sort((a,b)=>{const av=String(a[ldSortField]||'');const bv=String(b[ldSortField]||'');return ldSortDir==='asc'?av.localeCompare(bv):bv.localeCompare(av);});
   document.getElementById('ld-sum-total').textContent    = ldProjects.length;
-  document.getElementById('ld-sum-active').textContent   = ldProjects.filter(p => p.status && p.status !== 'Approved').length;
-  document.getElementById('ld-sum-approved').textContent = ldProjects.filter(p => p.status === 'Approved').length;
-  document.getElementById('ld-sum-stuck').textContent    = ldProjects.filter(p => p.status === 'Stuck').length;
-
-  if (ldProjects.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = '';
-    return;
-  }
-  empty.style.display = 'none';
-
-  if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px;">No applications match your filters.</td></tr>`;
-    return;
-  }
-
-  const adminActions = (p) => isAdmin ? `
-    <div class="actions-cell">
-      <button class="icon-btn" onclick="openLDModal('${p.id}')" title="Edit">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      </button>
-      <button class="icon-btn del" onclick="deleteLDProject('${p.id}')" title="Delete">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-      </button>
-    </div>` : '';
-
-  tbody.innerHTML = list.map(p => `<tr>
+  document.getElementById('ld-sum-active').textContent   = ldProjects.filter(p=>p.status&&p.status!=='Approved').length;
+  document.getElementById('ld-sum-approved').textContent = ldProjects.filter(p=>p.status==='Approved').length;
+  document.getElementById('ld-sum-stuck').textContent    = ldProjects.filter(p=>p.status==='Stuck').length;
+  if(ldProjects.length===0){tbody.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  if(list.length===0){tbody.innerHTML=`<tr><td colspan="11" style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px;">No applications match your filters.</td></tr>`;return;}
+  const adminActions=(p)=>isAdmin?`<div class="actions-cell">
+    <button class="icon-btn" onclick="openLDModal('${p.id}')" title="Edit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+    <button class="icon-btn del" onclick="deleteLDProject('${p.id}')" title="Delete"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+  </div>`:'';
+  tbody.innerHTML=list.map(p=>`<tr>
     <td class="project-name-cell">${esc(p.neighbourhood)}</td>
     <td>${esc(p.stage)}</td>
-    <td>${p.fileType ? `<span class="type-badge badge-ica" style="background:var(--navy-light);color:var(--navy)">${esc(p.fileType)}</span>` : '—'}</td>
-    <td class="da-cell">${esc(p.appNo || '—')}</td>
-    <td>${p.status ? `<span class="status-pill ${ldStatusClass(p.status)}">${esc(p.status)}</span>` : '—'}</td>
+    <td>${p.fileType?`<span class="type-badge badge-ica" style="background:var(--navy-light);color:var(--navy)">${esc(p.fileType)}</span>`:'—'}</td>
+    <td class="da-cell">${esc(p.appNo||'—')}</td>
+    <td>${p.status?`<span class="status-pill ${ldStatusClass(p.status)}">${esc(p.status)}</span>`:'—'}</td>
     <td style="font-size:13px">${esc(p.planner)}</td>
     <td style="font-size:13px">${esc(p.consultant)}</td>
     <td style="font-size:12px;white-space:nowrap">${fmtDate(p.engDate1)}</td>
     <td style="font-size:12px;white-space:nowrap">${fmtDate(p.engDate2)}</td>
-    <td class="ld-notes-cell" title="${esc(p.notes)}">${p.notes ? (p.notes.length > 50 ? esc(p.notes.substr(0,50))+'…' : esc(p.notes)) : '—'}</td>
+    <td class="ld-notes-cell" title="${esc(p.notes)}">${p.notes?(p.notes.length>50?esc(p.notes.substr(0,50))+'…':esc(p.notes)):'—'}</td>
     <td>${adminActions(p)}</td>
   </tr>`).join('');
 }
 
 function sortLD(field) {
-  if (ldSortField === field) ldSortDir = ldSortDir === 'asc' ? 'desc' : 'asc';
-  else { ldSortField = field; ldSortDir = 'asc'; }
+  if(ldSortField===field)ldSortDir=ldSortDir==='asc'?'desc':'asc';
+  else{ldSortField=field;ldSortDir='asc';}
   renderLD();
 }
 
-// =====================================================================
-// LAND DEV MODAL
-// =====================================================================
 function openLDModal(id) {
-  if (!isAdmin) return;
-  ldEditingId = id || null;
-  document.getElementById('ld-modal-title-text').textContent = id ? 'Edit Application' : 'Add Application';
-  const p = id ? (ldProjects.find(x => x.id === id) || {}) : {};
-  document.getElementById('ld-f-neighbourhood').value = p.neighbourhood || '';
-  document.getElementById('ld-f-stage').value         = p.stage         || '';
-  document.getElementById('ld-f-fileType').value      = p.fileType      || '';
-  document.getElementById('ld-f-appNo').value         = p.appNo         || '';
-  document.getElementById('ld-f-status').value        = p.status        || '';
-  document.getElementById('ld-f-planner').value       = p.planner       || '';
-  document.getElementById('ld-f-consultant').value    = p.consultant    || '';
-  document.getElementById('ld-f-engDate1').value      = p.engDate1      || '';
-  document.getElementById('ld-f-engDate2').value      = p.engDate2      || '';
-  document.getElementById('ld-f-notes').value         = p.notes         || '';
+  if(!isAdmin)return;
+  ldEditingId=id||null;
+  document.getElementById('ld-modal-title-text').textContent=id?'Edit Application':'Add Application';
+  const p=id?(ldProjects.find(x=>x.id===id)||{}):{};
+  document.getElementById('ld-f-neighbourhood').value=p.neighbourhood||'';
+  document.getElementById('ld-f-stage').value=p.stage||'';
+  document.getElementById('ld-f-fileType').value=p.fileType||'';
+  document.getElementById('ld-f-appNo').value=p.appNo||'';
+  document.getElementById('ld-f-status').value=p.status||'';
+  document.getElementById('ld-f-planner').value=p.planner||'';
+  document.getElementById('ld-f-consultant').value=p.consultant||'';
+  document.getElementById('ld-f-engDate1').value=p.engDate1||'';
+  document.getElementById('ld-f-engDate2').value=p.engDate2||'';
+  document.getElementById('ld-f-notes').value=p.notes||'';
   document.getElementById('ld-modal-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('ld-f-neighbourhood').focus(), 80);
+  setTimeout(()=>document.getElementById('ld-f-neighbourhood').focus(),80);
 }
 
 function closeLDModal() { document.getElementById('ld-modal-overlay').classList.remove('open'); }
 
 async function saveLDProject() {
-  if (!isAdmin) return;
-  const nbhd = (document.getElementById('ld-f-neighbourhood').value || '').trim();
-  const project = {
-    id:           ldEditingId || '',
-    neighbourhood: nbhd,
-    stage:        document.getElementById('ld-f-stage').value.trim(),
-    fileType:     document.getElementById('ld-f-fileType').value,
-    appNo:        document.getElementById('ld-f-appNo').value.trim(),
-    status:       document.getElementById('ld-f-status').value,
-    planner:      document.getElementById('ld-f-planner').value.trim(),
-    consultant:   document.getElementById('ld-f-consultant').value.trim(),
-    engDate1:     document.getElementById('ld-f-engDate1').value,
-    engDate2:     document.getElementById('ld-f-engDate2').value,
-    notes:        document.getElementById('ld-f-notes').value.trim()
+  if(!isAdmin)return;
+  const nbhd=(document.getElementById('ld-f-neighbourhood').value||'').trim();
+  const project={
+    id:ldEditingId||'', neighbourhood:nbhd,
+    stage:document.getElementById('ld-f-stage').value.trim(),
+    fileType:document.getElementById('ld-f-fileType').value,
+    appNo:document.getElementById('ld-f-appNo').value.trim(),
+    status:document.getElementById('ld-f-status').value,
+    planner:document.getElementById('ld-f-planner').value.trim(),
+    consultant:document.getElementById('ld-f-consultant').value.trim(),
+    engDate1:document.getElementById('ld-f-engDate1').value,
+    engDate2:document.getElementById('ld-f-engDate2').value,
+    notes:document.getElementById('ld-f-notes').value.trim()
   };
-  closeLDModal();
-  showSync('Saving application…', 'saving');
+  closeLDModal(); showSync('Saving application…','saving');
   try {
-    const res = await apiPost({ action: 'saveLandDev', secret: ADMIN_SECRET, ...project });
-    if (!ldEditingId && res.id) project.id = res.id;
-    if (ldEditingId) {
-      const idx = ldProjects.findIndex(x => x.id === ldEditingId);
-      if (idx >= 0) ldProjects[idx] = project;
-    } else {
-      ldProjects.push(project);
-    }
-    // Persist new neighbourhood
-    if (nbhd && !ldNeighbourhoods.includes(nbhd)) {
-      ldNeighbourhoods.push(nbhd);
-      ldNeighbourhoods.sort();
-      populateLDNeighbourhoodFilters();
-      try { await apiPost({ action: 'saveNeighbourhood', secret: ADMIN_SECRET, neighbourhood: nbhd }); } catch(e) {}
-    }
-    renderLD();
-    showSync('Saved', 'done');
-    showToast(ldEditingId ? 'Application updated' : 'Application added');
-  } catch(err) {
-    showSync('Save failed', 'error');
-    showToast('Error: ' + err.message, true);
-  }
+    const res=await apiPost({action:'saveLandDev',secret:ADMIN_SECRET,...project});
+    if(!ldEditingId&&res.id)project.id=res.id;
+    if(ldEditingId){const idx=ldProjects.findIndex(x=>x.id===ldEditingId);if(idx>=0)ldProjects[idx]=project;}
+    else ldProjects.push(project);
+    if(nbhd&&!ldNeighbourhoods.includes(nbhd)){ldNeighbourhoods.push(nbhd);ldNeighbourhoods.sort();populateLDNeighbourhoodFilters();try{await apiPost({action:'saveNeighbourhood',secret:ADMIN_SECRET,neighbourhood:nbhd});}catch(e){}}
+    renderLD(); showSync('Saved','done'); showToast(ldEditingId?'Application updated':'Application added');
+  } catch(err){showSync('Save failed','error');showToast('Error: '+err.message,true);}
 }
 
 async function deleteLDProject(id) {
-  if (!isAdmin) return;
-  const p = ldProjects.find(x => x.id === id);
-  if (!p) return;
-  if (!confirm(`Delete "${p.neighbourhood}${p.stage ? ' ' + p.stage : ''}"? This cannot be undone.`)) return;
-  showSync('Deleting…', 'saving');
+  if(!isAdmin)return;
+  const p=ldProjects.find(x=>x.id===id);
+  if(!p||!confirm(`Delete "${p.neighbourhood}${p.stage?' '+p.stage:''}"? This cannot be undone.`))return;
+  showSync('Deleting…','saving');
   try {
-    await apiPost({ action: 'deleteLandDev', secret: ADMIN_SECRET, id });
-    ldProjects = ldProjects.filter(x => x.id !== id);
-    renderLD();
-    showSync('Deleted', 'done');
-    showToast('Application deleted');
-  } catch(err) {
-    showSync('Delete failed', 'error');
-    showToast('Error: ' + err.message, true);
-  }
+    await apiPost({action:'deleteLandDev',secret:ADMIN_SECRET,id});
+    ldProjects=ldProjects.filter(x=>x.id!==id);
+    renderLD(); showSync('Deleted','done'); showToast('Application deleted');
+  } catch(err){showSync('Delete failed','error');showToast('Error: '+err.message,true);}
 }
 </script>
 </body>
