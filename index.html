@@ -390,6 +390,7 @@
       <table class="ld-table">
         <thead>
           <tr>
+            <th style="width:36px;"></th>
             <th class="sortable" onclick="sortLD('neighbourhood')">Neighbourhood <span class="sort-arrow"></span></th>
             <th class="sortable" onclick="sortLD('stage')">Stage <span class="sort-arrow"></span></th>
             <th>Type of File</th>
@@ -984,6 +985,7 @@ function switchTrackerTab(tab) {
 let ldProjects       = [];
 let ldNeighbourhoods = ["River's Edge","Stillwater","The Uplands"];
 let ldEditingId      = null;
+let ldExpandedRows   = new Set();
 let ldSortField      = 'neighbourhood';
 let ldSortDir        = 'asc';
 
@@ -1023,19 +1025,36 @@ function renderLD() {
     <button class="icon-btn" onclick="openLDModal('${p.id}')" title="Edit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
     <button class="icon-btn del" onclick="deleteLDProject('${p.id}')" title="Delete"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
   </div>`:'';
-  tbody.innerHTML=list.map(p=>`<tr>
-    <td class="project-name-cell">${esc(p.neighbourhood)}</td>
-    <td>${esc(p.stage)}</td>
-    <td>${p.fileType?`<span class="type-badge badge-ica" style="background:var(--navy-light);color:var(--navy)">${esc(p.fileType)}</span>`:'—'}</td>
-    <td class="da-cell">${esc(p.appNo||'—')}</td>
-    <td>${p.status?`<span class="status-pill ${ldStatusClass(p.status)}">${esc(p.status)}</span>`:'—'}</td>
-    <td style="font-size:13px">${esc(p.planner)}</td>
-    <td style="font-size:13px">${esc(p.consultant)}</td>
-    <td style="font-size:12px;white-space:nowrap">${fmtDate(p.engDate1)}</td>
-    <td style="font-size:12px;white-space:nowrap">${fmtDate(p.engDate2)}</td>
-    <td class="ld-notes-cell" title="${esc(p.notes)}">${p.notes?(p.notes.length>50?esc(p.notes.substr(0,50))+'…':esc(p.notes)):'—'}</td>
-    <td>${adminActions(p)}</td>
-  </tr>`).join('');
+  tbody.innerHTML=list.map(p=>{
+    const isExp = ldExpandedRows.has(p.id);
+    const mainRow = `<tr>
+      <td><button class="icon-btn expand-btn${isExp?' open':''}" onclick="toggleLDExpand('${p.id}')" title="Toggle notes" ${!p.notes ? 'disabled style="opacity:0.3;cursor:default;"' : ''}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          ${isExp?'<path d="M18 15l-6-6-6 6"/>':'<path d="M6 9l6 6 6-6"/>'}
+        </svg>
+      </button></td>
+      <td class="project-name-cell">${esc(p.neighbourhood)}</td>
+      <td>${esc(p.stage)}</td>
+      <td>${p.fileType?`<span class="type-badge badge-ica" style="background:var(--navy-light);color:var(--navy)">${esc(p.fileType)}</span>`:'—'}</td>
+      <td class="da-cell">${esc(p.appNo||'—')}</td>
+      <td>${p.status?`<span class="status-pill ${ldStatusClass(p.status)}">${esc(p.status)}</span>`:'—'}</td>
+      <td style="font-size:13px">${esc(p.planner)}</td>
+      <td style="font-size:13px">${esc(p.consultant)}</td>
+      <td style="font-size:12px;white-space:nowrap">${fmtDate(p.engDate1)}</td>
+      <td style="font-size:12px;white-space:nowrap">${fmtDate(p.engDate2)}</td>
+      <td class="ld-notes-cell" title="${esc(p.notes)}">${p.notes?(p.notes.length>50?esc(p.notes.substr(0,50))+'…':esc(p.notes)):'—'}</td>
+      <td>${adminActions(p)}</td>
+    </tr>`;
+    const detailRow = isExp && p.notes ? `<tr class="detail-row"><td colspan="12">
+      <div class="detail-notes"><span class="detail-notes-label">Notes</span><span>${esc(p.notes)}</span></div>
+    </td></tr>` : '';
+    return mainRow + detailRow;
+  }).join('');
+}
+
+function toggleLDExpand(id) {
+  if (ldExpandedRows.has(id)) ldExpandedRows.delete(id); else ldExpandedRows.add(id);
+  renderLD();
 }
 
 function sortLD(field) {
