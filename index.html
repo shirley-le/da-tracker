@@ -330,6 +330,7 @@
   <div class="tracker-tab-bar-inner">
     <button class="tracker-tab active" id="ttab-da" onclick="switchTrackerTab('da')">Development Agreements</button>
     <button class="tracker-tab" id="ttab-ld" onclick="switchTrackerTab('ld')">Land Development</button>
+    <button class="tracker-tab" id="ttab-end" onclick="switchTrackerTab('end')">Endorsement</button>
   </div>
 </div>
 
@@ -505,6 +506,65 @@
 </footer>
 </div><!-- end panel-ld -->
 
+<!-- ENDORSEMENT PANEL -->
+<div class="tracker-panel" id="panel-end">
+<main class="main-container">
+  <div class="error-banner" id="end-error-banner"></div>
+
+  <div class="summary-grid">
+    <div class="sum-card total"><div class="sum-num" id="end-sum-total">0</div><div class="sum-label">Total Projects</div></div>
+    <div class="sum-card inprogress"><div class="sum-num" id="end-sum-inprog">0</div><div class="sum-label">In Progress</div></div>
+    <div class="sum-card complete"><div class="sum-num" id="end-sum-complete">0</div><div class="sum-label">Complete</div></div>
+    <div class="sum-card notstarted"><div class="sum-num" id="end-sum-notstarted">0</div><div class="sum-label">Not Started</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" type="text" id="end-search-input" placeholder="Search project name…" oninput="renderEnd()"/>
+      </div>
+      <select class="filter-select" id="end-status-filter" onchange="renderEnd()">
+        <option value="">All statuses</option>
+        <option>Not started</option>
+        <option>In progress</option>
+        <option>Out for signing</option>
+        <option>Complete</option>
+      </select>
+      <select class="filter-select" id="end-nbhd-filter" onchange="renderEnd()">
+        <option value="">All neighbourhoods</option>
+      </select>
+    </div>
+    <button class="btn-add-header" id="btn-add-end" style="display:none;" onclick="openEndModal()">+ Add Project</button>
+  </div>
+
+  <div class="table-card">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th style="width:26px"></th>
+          <th class="sortable" onclick="sortEnd('name')">Project Name <span class="sort-arrow"></span></th>
+          <th class="sortable" onclick="sortEnd('neighbourhood')">Neighbourhood <span class="sort-arrow"></span></th>
+          <th>Checklist Progress</th>
+          <th class="sortable" onclick="sortEnd('_status')">Status <span class="sort-arrow"></span></th>
+          <th id="end-actions-th"></th>
+        </tr>
+      </thead>
+      <tbody id="end-tbody"></tbody>
+    </table>
+    <div id="end-empty-state" class="empty-state" style="display:none;">
+      <div class="empty-icon">📋</div>
+      <div class="empty-title">No endorsement projects yet</div>
+      <div class="empty-text" id="end-empty-text">No endorsement projects have been added yet.</div>
+      <button class="empty-btn" id="end-empty-add-btn" style="display:none;" onclick="openEndModal()">+ Add First Project</button>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <span>Qualico Communities</span> &mdash; Endorsement Tracker &mdash; Edmonton Region
+</footer>
+</div><!-- end panel-end -->
+
 <!-- MODAL (admin only) -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
@@ -660,6 +720,37 @@
   </div>
 </div>
 
+<!-- ENDORSEMENT MODAL -->
+<div class="modal-overlay" id="end-modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title" id="end-modal-title-text">Add Endorsement Project</div>
+      <button class="modal-close" onclick="closeEndModal()" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-row" style="grid-column:1/-1">
+          <label>Project Name</label>
+          <input type="text" id="end-f-name" placeholder="e.g. River's Edge Stage 4"/>
+        </div>
+        <div class="form-row" style="grid-column:1/-1">
+          <label>Neighbourhood</label>
+          <input type="text" id="end-f-neighbourhood" list="end-nbhd-datalist" placeholder="Type or select…" autocomplete="off"/>
+          <datalist id="end-nbhd-datalist"></datalist>
+        </div>
+        <div class="form-row" style="grid-column:1/-1">
+          <label>Notes</label>
+          <textarea id="end-f-notes" placeholder="Optional notes…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeEndModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEndProject()">Save Project</button>
+    </div>
+  </div>
+</div>
+
 <!-- CIRC DATE MINI-MODAL -->
 <div class="circ-modal-overlay hidden" id="circ-modal-overlay">
   <div class="circ-modal">
@@ -753,6 +844,10 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('ld-empty-add-btn').style.display = 'block';
     document.getElementById('ld-empty-text').textContent    = 'Add your first land development application to get started.';
     document.getElementById('ld-actions-th').textContent    = 'Actions';
+    document.getElementById('btn-add-end').style.display    = 'block';
+    document.getElementById('end-empty-add-btn').style.display = 'block';
+    document.getElementById('end-empty-text').textContent   = 'Add your first endorsement project to get started.';
+    document.getElementById('end-actions-th').textContent   = 'Actions';
   }
   loadAll();
 });
@@ -793,19 +888,23 @@ async function apiPost(body) {
 async function loadAll() {
   document.getElementById('loading-overlay').classList.remove('hidden');
   try {
-    const [daData, ldData, nbhdData] = await Promise.all([
+    const [daData, ldData, nbhdData, endData] = await Promise.all([
       jsonpGet('getDA'),
       jsonpGet('getLandDev'),
-      jsonpGet('getNeighbourhoods')
+      jsonpGet('getNeighbourhoods'),
+      jsonpGet('getEndorsements')
     ]);
     projects = (daData.projects || []).map(applyDateAutoChecks);
     ldProjects = ldData.projects || [];
+    endProjects = endData.projects || [];
     if (nbhdData.neighbourhoods && nbhdData.neighbourhoods.length) {
       ldNeighbourhoods = nbhdData.neighbourhoods;
     }
     renderAll();
     renderLD();
+    renderEnd();
     populateLDNeighbourhoodFilters();
+    populateEndNeighbourhoodFilters();
   } catch(err) {
     showError('Could not load projects. Check your SCRIPT_URL in index.html. (' + err.message + ')');
   } finally {
@@ -1250,9 +1349,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 function switchTrackerTab(tab) {
   document.getElementById('panel-da').classList.toggle('active', tab === 'da');
   document.getElementById('panel-ld').classList.toggle('active', tab === 'ld');
+  document.getElementById('panel-end').classList.toggle('active', tab === 'end');
   document.getElementById('ttab-da').classList.toggle('active', tab === 'da');
   document.getElementById('ttab-ld').classList.toggle('active', tab === 'ld');
-  // Show/hide add button in header
+  document.getElementById('ttab-end').classList.toggle('active', tab === 'end');
   document.getElementById('btn-add-header').style.display = (isAdmin && tab === 'da') ? 'block' : 'none';
 }
 
@@ -1511,6 +1611,290 @@ async function deleteLDProject(id) {
     showToast('Error: ' + err.message, true);
   }
 }
+
+// =====================================================================
+// ENDORSEMENT SECTION
+// =====================================================================
+
+const END_CHECKLIST = [
+  { label: 'Out for Signing',           dateField: null },
+  { label: 'Signed',                    dateField: null },
+  { label: 'Sealed and Scanned',        dateField: null },
+  { label: 'Planning PM Reviewed',      dateField: null },
+  { label: 'Endorsement Fee Received',  dateField: null },
+  { label: 'Bank Consent Requested',    dateField: 'bankConsentReqDate' },
+  { label: 'Bank Consent Received',     dateField: 'bankConsentRecDate' },
+  { label: 'Sent to Surveyor',          dateField: 'surveyorDate' },
+  { label: 'Courtesy Email Sent',       dateField: null }
+];
+const END_IDX_OUT_SIGNING = 0;
+const END_IDX_SIGNED      = 1;
+
+let endProjects  = [];
+let endExpanded  = new Set();
+let endEditingId = null;
+let endSortField = 'name';
+let endSortDir   = 'asc';
+
+function calcEndProgress(p) {
+  const checks = Array.isArray(p.checks) ? p.checks : END_CHECKLIST.map(() => false);
+  const signed  = checks[END_IDX_SIGNED];
+  let done = 0, total = 0;
+  END_CHECKLIST.forEach((_, i) => {
+    if (i === END_IDX_OUT_SIGNING && signed) return;
+    total++;
+    if (checks[i]) done++;
+  });
+  return { done, total, pct: total === 0 ? 100 : Math.round(done / total * 100) };
+}
+
+function derivedEndStatus(p) {
+  const checks = Array.isArray(p.checks) ? p.checks : END_CHECKLIST.map(() => false);
+  const { done, total } = calcEndProgress(p);
+  if (checks[END_IDX_OUT_SIGNING] && !checks[END_IDX_SIGNED]) return 'Out for signing';
+  if (done === 0) return 'Not started';
+  if (done === total) return 'Complete';
+  return 'In progress';
+}
+
+function endStatusClass(s) {
+  return { 'Complete': 's-complete', 'In progress': 's-in-progress', 'Not started': 's-not-started', 'Out for signing': 's-with-signing' }[s] || 's-not-started';
+}
+
+function populateEndNeighbourhoodFilters() {
+  const dl = document.getElementById('end-nbhd-datalist');
+  dl.innerHTML = ldNeighbourhoods.map(n => `<option value="${esc(n)}"></option>`).join('');
+  const sel = document.getElementById('end-nbhd-filter');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">All neighbourhoods</option>' +
+    ldNeighbourhoods.map(n => `<option value="${esc(n)}"${n===cur?' selected':''}>${esc(n)}</option>`).join('');
+}
+
+function renderEnd() {
+  const q      = (document.getElementById('end-search-input').value || '').toLowerCase();
+  const sf     = document.getElementById('end-status-filter').value;
+  const nf     = document.getElementById('end-nbhd-filter').value;
+  const tbody  = document.getElementById('end-tbody');
+  const empty  = document.getElementById('end-empty-state');
+
+  let list = endProjects.filter(p => {
+    const status = derivedEndStatus(p);
+    if (sf && status !== sf) return false;
+    if (nf && p.neighbourhood !== nf) return false;
+    if (q && !JSON.stringify(p).toLowerCase().includes(q)) return false;
+    return true;
+  }).map(p => ({ ...p, _status: derivedEndStatus(p) }));
+
+  list.sort((a, b) => {
+    const av = String(a[endSortField] || '');
+    const bv = String(b[endSortField] || '');
+    return endSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+
+  document.getElementById('end-sum-total').textContent     = endProjects.length;
+  document.getElementById('end-sum-inprog').textContent    = endProjects.filter(p => derivedEndStatus(p) === 'In progress').length;
+  document.getElementById('end-sum-complete').textContent  = endProjects.filter(p => derivedEndStatus(p) === 'Complete').length;
+  document.getElementById('end-sum-notstarted').textContent= endProjects.filter(p => derivedEndStatus(p) === 'Not started').length;
+
+  if (endProjects.length === 0) { tbody.innerHTML = ''; empty.style.display = ''; return; }
+  empty.style.display = 'none';
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px;">No projects match your filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(p => {
+    const status  = derivedEndStatus(p);
+    const prog    = calcEndProgress(p);
+    const checks  = Array.isArray(p.checks) ? p.checks : END_CHECKLIST.map(() => false);
+    const isExp   = endExpanded.has(p.id);
+    const outSign = checks[END_IDX_OUT_SIGNING] && !checks[END_IDX_SIGNED];
+    const sigBadge = outSign ? `<span class="with-signing-badge" style="margin-left:8px">Out for Signing</span>` : '';
+
+    const clHtml = END_CHECKLIST.map((item, idx) => {
+      const checked = checks[idx] || false;
+      const isOutForSigning = idx === END_IDX_OUT_SIGNING;
+      const dateVal = item.dateField ? (p[item.dateField] || '') : null;
+
+      let dateDisplay = '';
+      if (item.dateField) {
+        if (isAdmin) {
+          dateDisplay = `<input type="date" class="cl-date-input" value="${esc(dateVal)}"
+            onchange="updateEndDate('${p.id}','${item.dateField}',this.value);event.stopPropagation()"
+            onclick="event.stopPropagation()"
+            style="margin-left:6px;font-size:11px;border:1px solid var(--gray-200);border-radius:4px;padding:2px 5px;font-family:var(--font-body);color:var(--gray-800);background:#fff;cursor:pointer"/>`;
+        } else if (dateVal) {
+          dateDisplay = `<span style="margin-left:6px;font-size:11px;color:var(--gray-400)">${fmtDate(dateVal)}</span>`;
+        }
+      }
+
+      const clickAttr = isAdmin ? `onclick="toggleEndCheck('${p.id}',${idx});event.stopPropagation()"` : '';
+      const checkedClass = checked && !isOutForSigning ? ' checked' : '';
+
+      return `<div class="cl-item${checkedClass}${isAdmin?' clickable':''}" ${clickAttr}>
+        <input type="checkbox" ${checked?'checked':''} onclick="event.preventDefault()" readonly/>
+        <span class="cl-label">${esc(item.label)}</span>
+        ${dateDisplay}
+      </div>`;
+    }).join('');
+
+    const detailRow = isExp ? `<tr class="detail-row"><td colspan="6">
+      <div class="detail-inner">
+        <div class="checklist-header">Checklist <span>${prog.done} of ${prog.total} complete</span></div>
+        <div class="checklist-grid">${clHtml}</div>
+        ${p.notes ? `<div class="detail-notes"><span class="detail-notes-label">Notes</span><span>${esc(p.notes)}</span></div>` : ''}
+      </div>
+    </td></tr>` : '';
+
+    const adminActions = isAdmin ? `<div class="actions-cell">
+      <button class="icon-btn" onclick="openEndModal('${p.id}');event.stopPropagation()" title="Edit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+      <button class="icon-btn del" onclick="deleteEndProject('${p.id}');event.stopPropagation()" title="Delete">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </button>
+    </div>` : '';
+
+    return `<tr class="project-row${isExp?' expanded':''}" onclick="toggleEndExpand('${p.id}')">
+      <td><span class="expand-arrow${isExp?' open':''}">▶</span></td>
+      <td class="project-name-cell"><strong>${esc(p.name)}</strong>${sigBadge}</td>
+      <td style="font-size:13px">${esc(p.neighbourhood||'—')}</td>
+      <td>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill${prog.pct===100?' complete':''}" style="width:${prog.pct}%"></div></div>
+          <span class="progress-text">${prog.done}/${prog.total}</span>
+        </div>
+      </td>
+      <td><span class="status-pill ${endStatusClass(status)}">${esc(status)}</span></td>
+      <td>${adminActions}</td>
+    </tr>${detailRow}`;
+  }).join('');
+}
+
+function toggleEndExpand(id) {
+  if (endExpanded.has(id)) endExpanded.delete(id); else endExpanded.add(id);
+  renderEnd();
+}
+
+function sortEnd(field) {
+  if (endSortField === field) endSortDir = endSortDir==='asc'?'desc':'asc';
+  else { endSortField = field; endSortDir = 'asc'; }
+  renderEnd();
+}
+
+async function toggleEndCheck(id, idx) {
+  const p = endProjects.find(x => x.id === id);
+  if (!p || !isAdmin) return;
+  const checks = Array.isArray(p.checks) ? [...p.checks] : END_CHECKLIST.map(() => false);
+  while (checks.length < END_CHECKLIST.length) checks.push(false);
+  checks[idx] = !checks[idx];
+  p.checks = checks;
+  renderEnd();
+  showSync('Saving…', 'saving');
+  try {
+    await apiPost({ action: 'updateEndChecks', secret: ADMIN_SECRET, id, checks,
+      bankConsentReqDate: p.bankConsentReqDate || '',
+      bankConsentRecDate: p.bankConsentRecDate || '',
+      surveyorDate: p.surveyorDate || ''
+    });
+    showSync('Saved', 'done');
+  } catch(e) { showSync('Error: ' + e.message, 'error'); }
+}
+
+async function updateEndDate(id, field, value) {
+  const p = endProjects.find(x => x.id === id);
+  if (!p || !isAdmin) return;
+  p[field] = value;
+  // Auto-check the corresponding item when a date is entered
+  const idx = END_CHECKLIST.findIndex(item => item.dateField === field);
+  if (idx >= 0) {
+    if (!Array.isArray(p.checks)) p.checks = END_CHECKLIST.map(() => false);
+    while (p.checks.length < END_CHECKLIST.length) p.checks.push(false);
+    if (value) p.checks[idx] = true;
+  }
+  renderEnd();
+  showSync('Saving…', 'saving');
+  try {
+    await apiPost({ action: 'updateEndChecks', secret: ADMIN_SECRET, id, checks: p.checks,
+      bankConsentReqDate: p.bankConsentReqDate || '',
+      bankConsentRecDate: p.bankConsentRecDate || '',
+      surveyorDate: p.surveyorDate || ''
+    });
+    showSync('Saved', 'done');
+  } catch(e) { showSync('Error: ' + e.message, 'error'); }
+}
+
+function openEndModal(id) {
+  if (!isAdmin) return;
+  endEditingId = id || null;
+  document.getElementById('end-modal-title-text').textContent = id ? 'Edit Project' : 'Add Endorsement Project';
+  const p = id ? (endProjects.find(x => x.id === id) || {}) : {};
+  document.getElementById('end-f-name').value          = p.name          || '';
+  document.getElementById('end-f-neighbourhood').value = p.neighbourhood || '';
+  document.getElementById('end-f-notes').value         = p.notes         || '';
+  populateEndNeighbourhoodFilters();
+  document.getElementById('end-modal-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('end-f-name').focus(), 80);
+}
+
+function closeEndModal() { document.getElementById('end-modal-overlay').classList.remove('open'); }
+
+async function saveEndProject() {
+  if (!isAdmin) return;
+  const name = (document.getElementById('end-f-name').value || '').trim();
+  if (!name) { document.getElementById('end-f-name').style.borderColor='#A32D2D'; document.getElementById('end-f-name').focus(); return; }
+  document.getElementById('end-f-name').style.borderColor = '';
+  const existing = endEditingId ? (endProjects.find(x => x.id === endEditingId) || {}) : {};
+  const project = {
+    id:            endEditingId || '',
+    name,
+    neighbourhood: (document.getElementById('end-f-neighbourhood').value || '').trim(),
+    notes:         document.getElementById('end-f-notes').value.trim(),
+    checks:        existing.checks            || END_CHECKLIST.map(() => false),
+    bankConsentReqDate: existing.bankConsentReqDate || '',
+    bankConsentRecDate: existing.bankConsentRecDate || '',
+    surveyorDate:       existing.surveyorDate       || ''
+  };
+  closeEndModal();
+  showSync('Saving…', 'saving');
+  try {
+    const res = await apiPost({ action: 'saveEndorsement', secret: ADMIN_SECRET, ...project });
+    if (!endEditingId && res.id) project.id = res.id;
+    if (endEditingId) {
+      const idx = endProjects.findIndex(x => x.id === endEditingId);
+      if (idx >= 0) endProjects[idx] = project;
+    } else {
+      endProjects.push(project);
+    }
+    renderEnd();
+    showSync('Saved', 'done');
+    showToast(endEditingId ? 'Project updated' : 'Endorsement project added');
+  } catch(e) {
+    showSync('Error: ' + e.message, 'error');
+    showToast('Error: ' + e.message, true);
+  }
+}
+
+async function deleteEndProject(id) {
+  if (!isAdmin) return;
+  const p = endProjects.find(x => x.id === id);
+  if (!p) return;
+  if (!confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
+  showSync('Deleting…', 'saving');
+  try {
+    await apiPost({ action: 'deleteEndorsement', secret: ADMIN_SECRET, id });
+    endProjects = endProjects.filter(x => x.id !== id);
+    endExpanded.delete(id);
+    renderEnd();
+    showSync('Deleted', 'done');
+    showToast('Project deleted');
+  } catch(e) {
+    showSync('Error: ' + e.message, 'error');
+    showToast('Error: ' + e.message, true);
+  }
+}
+
+document.getElementById('end-modal-overlay').addEventListener('click', function(e) { if (e.target === this) closeEndModal(); });
 </script>
 </body>
 </html>
