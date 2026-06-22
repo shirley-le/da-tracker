@@ -896,7 +896,7 @@ async function loadAll() {
     ]);
     projects = (daData.projects || []).map(applyDateAutoChecks);
     ldProjects = ldData.projects || [];
-    endProjects = endData.projects || [];
+    endProjects = (endData.projects || []).filter(p => String(p.id).startsWith('end_'));
     if (nbhdData.neighbourhoods && nbhdData.neighbourhoods.length) {
       ldNeighbourhoods = nbhdData.neighbourhoods;
     }
