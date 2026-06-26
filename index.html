@@ -1617,15 +1617,16 @@ async function deleteLDProject(id) {
 // =====================================================================
 
 const END_CHECKLIST = [
-  { label: 'Out for Signing',           dateField: null },
-  { label: 'Signed',                    dateField: null },
-  { label: 'Sealed and Scanned',        dateField: null },
-  { label: 'Planning PM Reviewed',      dateField: null },
-  { label: 'Endorsement Fee Received',  dateField: null },
-  { label: 'Bank Consent Requested',    dateField: 'bankConsentReqDate' },
-  { label: 'Bank Consent Received',     dateField: 'bankConsentRecDate' },
-  { label: 'Sent to Surveyor',          dateField: 'surveyorDate' },
-  { label: 'Courtesy Email Sent',       dateField: null }
+  { label: 'Out for Signing',              dateField: null },
+  { label: 'Signed',                       dateField: null },
+  { label: 'Sealed and Scanned',           dateField: null },
+  { label: 'Planning PM Reviewed',         dateField: null },
+  { label: 'Endorsement Fee Requested',    dateField: 'endFeeReqDate' },
+  { label: 'Endorsement Fee Received',     dateField: null },
+  { label: 'Bank Consent Requested',       dateField: 'bankConsentReqDate' },
+  { label: 'Bank Consent Received',        dateField: 'bankConsentRecDate' },
+  { label: 'Sent to Surveyor',             dateField: 'surveyorDate' },
+  { label: 'Courtesy Email Sent',          dateField: null }
 ];
 const END_IDX_OUT_SIGNING = 0;
 const END_IDX_SIGNED      = 1;
@@ -1761,8 +1762,8 @@ function renderEnd() {
       <td style="font-size:13px">${esc(p.neighbourhood||'—')}</td>
       <td>
         <div class="progress-wrap">
-          <div class="progress-bar"><div class="progress-fill${prog.pct===100?' complete':''}" style="width:${prog.pct}%"></div></div>
-          <span class="progress-text">${prog.done}/${prog.total}</span>
+          <div class="progress-track"><div class="progress-fill${prog.pct===100?' done':''}" style="width:${prog.pct}%"></div></div>
+          <span class="progress-pct">${prog.done}/${prog.total}</span>
         </div>
       </td>
       <td><span class="status-pill ${endStatusClass(status)}">${esc(status)}</span></td>
@@ -1793,6 +1794,7 @@ async function toggleEndCheck(id, idx) {
   showSync('Saving…', 'saving');
   try {
     await apiPost({ action: 'updateEndChecks', secret: ADMIN_SECRET, id, checks,
+      endFeeReqDate: p.endFeeReqDate || '',
       bankConsentReqDate: p.bankConsentReqDate || '',
       bankConsentRecDate: p.bankConsentRecDate || '',
       surveyorDate: p.surveyorDate || ''
@@ -1816,6 +1818,7 @@ async function updateEndDate(id, field, value) {
   showSync('Saving…', 'saving');
   try {
     await apiPost({ action: 'updateEndChecks', secret: ADMIN_SECRET, id, checks: p.checks,
+      endFeeReqDate: p.endFeeReqDate || '',
       bankConsentReqDate: p.bankConsentReqDate || '',
       bankConsentRecDate: p.bankConsentRecDate || '',
       surveyorDate: p.surveyorDate || ''
@@ -1851,6 +1854,7 @@ async function saveEndProject() {
     neighbourhood: (document.getElementById('end-f-neighbourhood').value || '').trim(),
     notes:         document.getElementById('end-f-notes').value.trim(),
     checks:        existing.checks            || END_CHECKLIST.map(() => false),
+    endFeeReqDate:      existing.endFeeReqDate      || '',
     bankConsentReqDate: existing.bankConsentReqDate || '',
     bankConsentRecDate: existing.bankConsentRecDate || '',
     surveyorDate:       existing.surveyorDate       || ''
